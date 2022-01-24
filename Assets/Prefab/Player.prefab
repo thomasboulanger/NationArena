@@ -163,6 +163,11 @@ MonoBehaviour:
   speed: 10
   anchorGround: {fileID: 8457597096936553332}
   anchor: {fileID: 1159602782}
+  RepulseForceModifier: 1
+  _fireCooldown: 3
+  _earthCooldown: 3
+  _waterCooldown: 3
+  _windCooldown: 3
 --- !u!54 &7518686995525776026
 Rigidbody:
   m_ObjectHideFlags: 0
