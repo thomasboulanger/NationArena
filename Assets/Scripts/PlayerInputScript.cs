@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,7 +13,7 @@ public class PlayerInputScript : MonoBehaviour
     public GameObject anchor;
 
     private Rigidbody _rigidbody;
-    private Vector2 _inputVector;
+    private Vector2 _inputVector; 
     private string _elementInMemory = "";
 
     void Start()
@@ -29,7 +28,6 @@ public class PlayerInputScript : MonoBehaviour
                 transform.name = "Joueur " + i + 1;
             }
         }
-
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -37,26 +35,32 @@ public class PlayerInputScript : MonoBehaviour
     {
         if (GameController.inRound)
         {
-            Vector3 tmpVec = new Vector3(_inputVector.x, 0f, _inputVector.y);
-            tmpVec = tmpVec.normalized * speed * Time.deltaTime;
-            _rigidbody.MovePosition(transform.position + tmpVec);
-
-            if (_rigidbody.velocity.magnitude > 5f)
-            {
-                _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
-            }
-
-            if (_inputVector != Vector2.zero)
-            {
-                transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y), Time.deltaTime * lerpSpeed);
-            }
-            else
-            {
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
+            MovePlayer();
         }
     }
-    
+
+    private void MovePlayer()
+    {
+        Vector3 tmpVec = new Vector3(_inputVector.x, 0f, _inputVector.y);
+        tmpVec = tmpVec.normalized * speed * Time.deltaTime;
+        _rigidbody.MovePosition(transform.position + tmpVec);
+
+        if (_rigidbody.velocity.magnitude > 5f)
+        {
+            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
+        }
+
+        if (_inputVector != Vector2.zero)
+        {
+            transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y),
+                Time.deltaTime * lerpSpeed);
+        }
+        else
+        {
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+    }
+
     private void OnMovement(InputValue value)
     {
          _inputVector = value.Get<Vector2>();
@@ -125,7 +129,7 @@ public class PlayerInputScript : MonoBehaviour
                 //fire
                 GameObject go = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
                 go.transform.forward = transform.forward;
-                go.GetComponent<KnockBack>().Init(this.gameObject);
+                go.GetComponent<KnockBack>().Init(gameObject);
                 break;
             case "E":
                 //earth

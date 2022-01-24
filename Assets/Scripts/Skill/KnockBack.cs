@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class KnockBack : MonoBehaviour
@@ -33,7 +32,6 @@ public class KnockBack : MonoBehaviour
       {
         Rigidbody _rb = player.GetComponent<Rigidbody>();
         _rb.AddExplosionForce(force,transform.position,radius);
-        
       }
     }
     Destroy(gameObject);
