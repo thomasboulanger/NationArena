@@ -52,8 +52,9 @@ public class PlayerInputScript : MonoBehaviour
 
         if (_inputVector != Vector2.zero)
         {
-            transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y),
-                Time.deltaTime * lerpSpeed);
+            /*transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y),
+                Time.deltaTime * lerpSpeed);*/
+            transform.forward = new Vector3(transform.forward.x + tmpVec.x,transform.forward.y ,transform.forward.z + tmpVec.z);
         }
         else
         {
