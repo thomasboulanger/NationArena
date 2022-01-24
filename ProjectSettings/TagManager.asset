@@ -10,6 +10,7 @@ TagManager:
   - GroundLayer1
   - GroundLayer2
   - GroundLayer3
+  - Hexagon
   layers:
   - Default
   - TransparentFX

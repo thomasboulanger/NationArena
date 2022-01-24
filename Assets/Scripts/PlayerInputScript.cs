@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,15 +11,28 @@ public class PlayerInputScript : MonoBehaviour
     public float speed = 1f;
     public GameObject anchorGround;
     public GameObject anchor;
+    [HideInInspector]
+    public float RepulseForceModifier = 1;
 
+   
+    
     private Rigidbody _rigidbody;
     private Vector2 _inputVector;
     private string _elementInMemory = "";
+    private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp;
+    private float 
+        _fireCooldown,
+        _earthCooldown,
+        _waterCooldown,
+        _windCooldown,
+        _fireTimer,
+        _earthTimer,
+        _waterTimer,
+        _windTimer;
 
     void Start()
     {
         playerList.Add(gameObject);
-        
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
@@ -29,7 +41,6 @@ public class PlayerInputScript : MonoBehaviour
                 transform.name = "Joueur " + i + 1;
             }
         }
-
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -37,23 +48,48 @@ public class PlayerInputScript : MonoBehaviour
     {
         if (GameController.inRound)
         {
-            Vector3 tmpVec = new Vector3(_inputVector.x, 0f, _inputVector.y);
-            tmpVec = tmpVec.normalized * speed * Time.deltaTime;
-            _rigidbody.MovePosition(transform.position + tmpVec);
+            MovePlayer();
+            if (!_isFireUp) _isFireUp = DecrementCooldown(_fireCooldown, _fireTimer);
+            if (!_isEarthUp) _isEarthUp = DecrementCooldown(_earthCooldown, _earthTimer);
+            if (!_isWaterUp) _isWaterUp = DecrementCooldown(_waterCooldown, _waterTimer);
+            if (!_isWindUp) _isWindUp = DecrementCooldown(_windCooldown, _windTimer);
+        }
+    }
+    
+    private void MovePlayer()
+    {
+        Vector3 tmpVec = new Vector3(_inputVector.x, 0f, _inputVector.y);
+        tmpVec = tmpVec.normalized * speed * Time.deltaTime;
+        _rigidbody.MovePosition(transform.position + tmpVec);
 
-            if (_rigidbody.velocity.magnitude > 5f)
-            {
-                _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
-            }
+        if (_rigidbody.velocity.magnitude > 5f)
+        {
+            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 5f);
+        }
 
-            if (_inputVector != Vector2.zero)
-            {
-                transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y), Time.deltaTime * lerpSpeed);
-            }
-            else
-            {
-                _rigidbody.angularVelocity = Vector3.zero;
-            }
+        if (_inputVector != Vector2.zero)
+        {
+            /*transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y),
+                Time.deltaTime * lerpSpeed);*/
+            transform.forward = new Vector3(transform.forward.x + tmpVec.x, transform.forward.y ,transform.forward.z + tmpVec.z);
+        }
+        else
+        {
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+    }
+    
+    private bool DecrementCooldown(float Cooldown, float timer)
+    {
+        if (timer < Cooldown)
+        {
+            timer += Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            timer = 0f;
+            return true;
         }
     }
     
@@ -63,56 +99,28 @@ public class PlayerInputScript : MonoBehaviour
     }
 
     private void OnSelectElementTop()
-    {
-        //fire
+    { //fire
         _elementInMemory += "F";
-        if (_elementInMemory.Length > 2)
-        {
-            _elementInMemory = _elementInMemory.Substring(1);
-        }
-        if (_elementInMemory == "FF")
-        {
-            _elementInMemory = "F";
-        }
+        if (_elementInMemory.Length > 2) _elementInMemory = _elementInMemory.Substring(1);
+        if (_elementInMemory == "FF") _elementInMemory = "F";
     }
     private void OnSelectElementBottom()
-    {
-        //earth
+    { //earth
         _elementInMemory += "E";
-        if (_elementInMemory.Length > 2)
-        {
-            _elementInMemory = _elementInMemory.Substring(1);
-        }
-        if (_elementInMemory == "EE")
-        {
-            _elementInMemory = "E";
-        }
+        if (_elementInMemory.Length > 2) _elementInMemory = _elementInMemory.Substring(1);
+        if (_elementInMemory == "EE") _elementInMemory = "E";
     }
     private void OnSelectElementLeft()
-    {
-        //water
+    { //water
         _elementInMemory += "W";
-        if (_elementInMemory.Length > 2)
-        {
-            _elementInMemory = _elementInMemory.Substring(1);
-        }
-        if (_elementInMemory == "WW")
-        {
-            _elementInMemory = "W";
-        }
+        if (_elementInMemory.Length > 2) _elementInMemory = _elementInMemory.Substring(1);
+        if (_elementInMemory == "WW") _elementInMemory = "W";
     }
     private void OnSelectElementRight()
-    {
-        //wind
+    { //wind
         _elementInMemory += "I";
-        if (_elementInMemory.Length > 2)
-        {
-            _elementInMemory = _elementInMemory.Substring(1);
-        }
-        if (_elementInMemory == "II")
-        {
-            _elementInMemory = "I";
-        }
+        if (_elementInMemory.Length > 2) _elementInMemory = _elementInMemory.Substring(1);
+        if (_elementInMemory == "II") _elementInMemory = "I";
     }
 
     private void OnCastSpell()
@@ -125,7 +133,7 @@ public class PlayerInputScript : MonoBehaviour
                 //fire
                 GameObject go = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
                 go.transform.forward = transform.forward;
-                go.GetComponent<KnockBack>().Init(this.gameObject);
+                go.GetComponent<KnockBack>().Init(gameObject);
                 break;
             case "E":
                 //earth
@@ -139,51 +147,27 @@ public class PlayerInputScript : MonoBehaviour
                 //wind
                 
                 break;
-            case "FE":
+            case "FE" : case "EF":
                 //fire earth
                 
                 break;
-            case "EF":
-                //fire earth
-
-                break;
-            case "FW":
-                //fire water
-                
-                break;
-            case "WF":
+            case "FW": case "WF":
                 //fire water
 
                 break;
-            case "FI":
+            case "FI": case "IF":
                 //fire wind
 
                 break;
-            case "IF":
-                //fire wind
-
-                break;
-            case "EW":
-                //earth water
-                
-                break;
-            case "WE":
+            case "EW": case "WE":
                 //earth water
 
                 break;
-            case "EI":
-                //earth wind
-                
-                break;
-            case "IE":
+            case "EI":  case "IE":
                 //earth wind
 
                 break;
-            case "WI":
-                //water wind
-                
-                break;
-            case "IW":
+            case "WI":  case "IW":
                 //water wind
 
                 break;
