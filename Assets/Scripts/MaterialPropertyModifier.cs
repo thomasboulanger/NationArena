@@ -73,17 +73,24 @@ public class MaterialPropertyModifier : MonoBehaviour
         }
         else
         {
+            List<Renderer> rndrList = new List<Renderer>();
             foreach (Renderer rndr in tileRenderers)
             {
                 if (rndr.transform.parent.tag.Contains(_actualLayer.ToString()))
                 {
-                    tileRenderers.Remove(rndr); 
-                    Destroy(rndr.gameObject);
+                    rndrList.Add(rndr);
                     rndr.transform.parent.GetChild(1).GetComponent<Rigidbody>().useGravity = true;
                     rndr.transform.parent.GetChild(1).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                     Destroy(rndr.transform.parent.gameObject, 1.5f); 
                 }
             }
+
+            foreach (Renderer renderer in rndrList)
+            {
+                tileRenderers.Remove(renderer); 
+                Destroy(renderer.gameObject);
+            }
+            rndrList.Clear();
             _actualLayer--; 
             _dissolveOneLayer = false;
             dissolveValue = 0f; 
