@@ -33,23 +33,9 @@ public class HealthBar : MonoBehaviour
         //Pour chaque component:
         foreach (Image img in imageList)
         {
-            //Verifie quelle partie de la barre de vie ils sont
-            //Note: This is only important if the healthbar is composed of 3 different sprites, otherwise it can all be deprecated
-            switch (img.gameObject.name)
-            {
-                //Si c'est la droite, prend en compte seulement les 12 premiers pv
-                case "BarRight":
-                    img.fillAmount = (_health.GetLife() - 88f) / 12;
-                    break;
-                //Si c'est le milieu, prend en compte seulement les 76 pv du milieu
-                case "Bar":
-                    img.fillAmount = (_health.GetLife() - 12f) / 76;
-                    break;
-                //Si c'est la gauche, prend en compte seulement les 12 derniers pv
-                case "BarLeft":
-                    img.fillAmount = (float) _health.GetLife() / 12;
-                    break;
-            }
+            //Update la barre de vie
+            if (img.gameObject.name == "Health")
+                img.fillAmount = ((float) _health.GetLife() / 100);
         }
         //Si le personnage atteint 0 pv, detruit le player
         if (_health.IsDead())
