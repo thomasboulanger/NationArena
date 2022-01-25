@@ -9,52 +9,39 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-    private Canvas _canvas;
     public AudioMixer mixer;
-    private void Start()
-    {
-        _canvas = FindObjectOfType<Canvas>();
-    }
-
-    public void MainToPlay()
-    {
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(false);
-        _canvas.transform.Find("Play Menu").gameObject.SetActive(true);
-    }
-
-    public void MainToSettings()
-    {
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(false);
-        _canvas.transform.Find("Settings Menu").gameObject.SetActive(true);
-    }
-
-    public void MainToCredits()
-    {
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(false);
-        _canvas.transform.Find("Credits").gameObject.SetActive(true);
-    }
-
-    public void PlayToMain()
-    {
-        _canvas.transform.Find("Play Menu").gameObject.SetActive(false);
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(true);
-    }
-
-    public void SettingsToMain()
-    {
-        _canvas.transform.Find("Settings Menu").gameObject.SetActive(false);
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(true);
-    }
-
-    public void CreditsToMain()
-    {
-        _canvas.transform.Find("Credits").gameObject.SetActive(false);
-        _canvas.transform.Find("Main Menu").gameObject.SetActive(true);
-    }
 
     public void SetVolume(float volume)
     {
-        GameObject.Find("SliderText").GetComponent<Text>().text = "Volume: " + (int) (float) ((volume * 1.25f) + 100) + "%";
-        mixer.SetFloat("MasterVolume", volume * 10);
+        mixer.SetFloat("MasterVolume", volume);
+        GameObject.Find("SliderText").GetComponent<Text>().text = "Volume: " + (int) ((volume * 1.25f) + 100) + "%";
+        
+    }
+
+    public void SetFullscreen(bool fullscreen)
+    {
+        Screen.fullScreen = fullscreen;
+    }
+
+    public void SetResolution(float resolution)
+    {
+        switch ((int) resolution)
+        {
+            case 0:
+                Screen.SetResolution(640,360,Screen.fullScreen);
+                break;
+            case 1:
+                Screen.SetResolution(800,600,Screen.fullScreen);
+                break;
+            case 2:
+                Screen.SetResolution(1280,720,Screen.fullScreen);
+                break;
+            case 3:
+                Screen.SetResolution(1600,900,Screen.fullScreen);
+                break;
+            case 4:
+                Screen.SetResolution(1920,1080,Screen.fullScreen);
+                break;
+        }
     }
 }
