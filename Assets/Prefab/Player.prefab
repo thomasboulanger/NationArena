@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159602782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.422, y: -0.19, z: 3.48}
+  m_LocalPosition: {x: 0.422, y: -0.19, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4186382323366929634}
@@ -164,10 +164,6 @@ MonoBehaviour:
   anchorGround: {fileID: 8457597096936553332}
   anchor: {fileID: 1159602782}
   RepulseForceModifier: 1
-  _fireCooldown: 3
-  _earthCooldown: 3
-  _waterCooldown: 3
-  _windCooldown: 3
 --- !u!54 &7518686995525776026
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -222,7 +218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8457597096936553332}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0.6}
+  m_LocalPosition: {x: 0, y: -1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4186382323366929634}

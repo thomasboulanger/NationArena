@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class PlayerInputScript : MonoBehaviour
     private Rigidbody _rigidbody;
     private Vector2 _inputVector;
     private string _elementInMemory = "";
+    private float speedModifier;
     private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp;
     private float 
         _fireCooldown,
@@ -42,6 +44,7 @@ public class PlayerInputScript : MonoBehaviour
             }
         }
         _rigidbody = GetComponent<Rigidbody>();
+        speedModifier = 1;
     }
 
     void Update()
@@ -59,7 +62,7 @@ public class PlayerInputScript : MonoBehaviour
     private void MovePlayer()
     {
         Vector3 tmpVec = new Vector3(_inputVector.x, 0f, _inputVector.y);
-        tmpVec = tmpVec.normalized * speed * Time.deltaTime;
+        tmpVec = tmpVec.normalized * speed * speedModifier * Time.deltaTime;
         _rigidbody.MovePosition(transform.position + tmpVec);
 
         if (_rigidbody.velocity.magnitude > 5f)
@@ -68,15 +71,9 @@ public class PlayerInputScript : MonoBehaviour
         }
 
         if (_inputVector != Vector2.zero)
-        {
-            /*transform.forward = Vector3.Lerp(transform.forward, new Vector3(_inputVector.x, 0, _inputVector.y),
-                Time.deltaTime * lerpSpeed);*/
             transform.forward = new Vector3(transform.forward.x + tmpVec.x, transform.forward.y ,transform.forward.z + tmpVec.z);
-        }
         else
-        {
             _rigidbody.angularVelocity = Vector3.zero;
-        }
     }
     
     private bool DecrementCooldown(float Cooldown, float timer)
@@ -131,9 +128,9 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "F":
                 //fire
-                GameObject go = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
-                go.transform.forward = transform.forward;
-                go.GetComponent<KnockBack>().Init(gameObject);
+                GameObject fireball = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                fireball.transform.forward = transform.forward;
+                fireball.GetComponent<KnockBack>().Init(gameObject, 500, 5, true);
                 break;
             case "E":
                 //earth
@@ -141,15 +138,21 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "W":
                 //water
-                
+                GameObject wave = Instantiate(GameController.Skills[0], anchorGround.transform.position, quaternion.identity);
+                wave.transform.forward = transform.forward;
+                wave.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
                 break;
             case "I":
                 //wind
-                
+                GameObject wind = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                wind.transform.forward = transform.forward;
+                wind.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
                 break;
             case "FE" : case "EF":
                 //fire earth
-                
+                GameObject meteor = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                meteor.transform.forward = transform.forward;
+                meteor.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
                 break;
             case "FW": case "WF":
                 //fire water
@@ -161,7 +164,9 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "EW": case "WE":
                 //earth water
-
+                GameObject armor = Instantiate(GameController.Skills[2], transform.position + transform.up, quaternion.identity);
+                Destroy(armor.gameObject,10);
+                StartCoroutine(armorlifetime());
                 break;
             case "EI":  case "IE":
                 //earth wind
@@ -169,12 +174,22 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "WI":  case "IW":
                 //water wind
-
+                GameObject iceWall = Instantiate(GameController.Skills[1], anchorGround.transform.position, quaternion.identity);
+                iceWall.transform.forward = transform.forward;
                 break;
             default:
                 Debug.LogError("ton switch deconne");
                 break;
         }
         _elementInMemory = "";
+    }
+
+    IEnumerator armorlifetime()
+    {
+        speedModifier = .5f;
+        RepulseForceModifier = .3f;
+        yield return new WaitForSeconds(10);
+        speedModifier = 1f;
+        RepulseForceModifier = 1f;
     }
 }
