@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -138,18 +139,18 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "W":
                 //water
-                GameObject wave = Instantiate(GameController.Skills[4], anchorGround.transform.position, quaternion.identity);
+                GameObject wave = Instantiate(GameController.Skills[1], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
                 wave.transform.forward = transform.forward;
                 wave.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
                 break;
             case "I":
                 //wind
-                GameObject wind = Instantiate(GameController.Skills[6], anchor.transform.position + transform.forward * 2, quaternion.identity);
+                GameObject wind = Instantiate(GameController.Skills[3], anchor.transform.position + transform.forward * 2, quaternion.identity);
                 wind.transform.forward = transform.forward;
                 break;
             case "FE" : case "EF":
                 //fire earth
-                GameObject meteor = Instantiate(GameController.Skills[3], transform.position + Vector3.up * 7, quaternion.identity);
+                GameObject meteor = Instantiate(GameController.Skills[5], transform.position + Vector3.up * 7, quaternion.identity);
                 meteor.transform.forward = transform.forward;
                 
                 break;
@@ -163,19 +164,20 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "EW": case "WE":
                 //earth water
-                GameObject armor = Instantiate(GameController.Skills[2], transform.position + transform.up, quaternion.identity);
+                GameObject armor = Instantiate(GameController.Skills[7], transform.position + transform.up, quaternion.identity);
                 Destroy(armor.gameObject,10);
                 StartCoroutine(armorlifetime());
+                armor.transform.SetParent(transform);
                 break;
             case "EI":  case "IE":
                 //earth wind
-                GameObject reversePosition = Instantiate(GameController.Skills[5], anchor.transform.position, quaternion.identity);
+                GameObject reversePosition = Instantiate(GameController.Skills[9], anchor.transform.position, quaternion.identity);
                 reversePosition.transform.forward = transform.forward;
                 reversePosition.GetComponent<ReversePosition>().Init(gameObject);
                 break;
             case "WI":  case "IW":
                 //water wind
-                GameObject iceWall = Instantiate(GameController.Skills[1], anchorGround.transform.position, quaternion.identity);
+                GameObject iceWall = Instantiate(GameController.Skills[8], anchorGround.transform.position, quaternion.identity);
                 iceWall.transform.forward = transform.forward;
                 break;
             default:

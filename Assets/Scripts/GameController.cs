@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -10,37 +10,18 @@ public class GameController : MonoBehaviour
     public static int roundNumber;
 
     public List<GameObject> skillList = new List<GameObject>();
-
+    
     private void Awake()
     {
-        foreach (GameObject spawn in GameObject.FindGameObjectsWithTag("SpawnPoint"))
-        {
-            spawnPoints.Add(spawn.gameObject);
-        }
-
+        roundNumber = 0;
         foreach (GameObject skill in skillList)
         {
             Skills.Add(skill);
         }
-    }
-
-    private void Start()
-    {
-       
-
+        foreach (GameObject spawn in GameObject.FindGameObjectsWithTag("SpawnPoint"))
+        {
+            spawnPoints.Add(spawn.gameObject);
+        }
         inRound = true;
-        roundNumber = 0;
     }
-
-    public void StartGame()
-    {
-        roundNumber++;
-        
-    }
-
-    public void Pause()
-    {
-        
-    }
-    
 }
