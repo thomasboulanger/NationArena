@@ -26,6 +26,8 @@ public class RandomEventScript : MonoBehaviour
     public GameObject PillarPrefab;
     public int MinPillarsNumber;
     public int MaxPillarsNumber;
+    public bool PillarGoToCellCenter;
+    
     private List<GameObject> ActivePillars = new List<GameObject>();
 
     [Space]
