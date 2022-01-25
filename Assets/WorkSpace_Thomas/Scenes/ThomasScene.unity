@@ -2449,11 +2449,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73fc064ed874b2d438ee41cd84a5b9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxEventAtTheSameTime: 2
-  PercentageForNewEvent: 100
-  LightsOutEventPossible: 0
+  MaxEventAtTheSameTime: 1
+  PercentageForNewEvent: 40
+  LightsOutEventPossible: 1
   SpawnRandomPillarEventPossible: 1
-  SpawnAddFenceEventPossible: 1
+  SpawnAddFenceEventPossible: 0
   LightOffEventPreset: {fileID: 11400000, guid: 6ff925a6352941b479f317400cb1d36a, type: 2}
   FogFadeTime: 5
   IsInLOEvent: 0
@@ -2461,6 +2461,7 @@ MonoBehaviour:
   PillarPrefab: {fileID: 2639000160454190348, guid: 75ba163806812f24b960bf6c480de2b6, type: 3}
   MinPillarsNumber: 1
   MaxPillarsNumber: 10
+  PillarGoToCellCenter: 1
   BaseTimer: 1
 --- !u!1001 &932200131
 PrefabInstance:
