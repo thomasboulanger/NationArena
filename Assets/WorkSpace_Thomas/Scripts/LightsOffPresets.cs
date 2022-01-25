@@ -14,8 +14,4 @@ public class LightsOffPresets : ScriptableObject
     public Color FogColor;
     public float FogDensity;
     [Range(0,1)]public float HaloStrength;
-
-    [Header("Lights")]
-    public Color LightColor;
-    public float Intensity;
 }
