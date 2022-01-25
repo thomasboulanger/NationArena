@@ -138,21 +138,20 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "W":
                 //water
-                GameObject wave = Instantiate(GameController.Skills[0], anchorGround.transform.position, quaternion.identity);
+                GameObject wave = Instantiate(GameController.Skills[4], anchorGround.transform.position, quaternion.identity);
                 wave.transform.forward = transform.forward;
-                wave.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
+                wave.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
                 break;
             case "I":
                 //wind
-                GameObject wind = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                GameObject wind = Instantiate(GameController.Skills[6], anchor.transform.position + transform.forward * 2, quaternion.identity);
                 wind.transform.forward = transform.forward;
-                wind.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
                 break;
             case "FE" : case "EF":
                 //fire earth
-                GameObject meteor = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                GameObject meteor = Instantiate(GameController.Skills[3], transform.position + Vector3.up * 7, quaternion.identity);
                 meteor.transform.forward = transform.forward;
-                meteor.GetComponent<KnockBack>().Init(gameObject, 500, 5, false);
+                
                 break;
             case "FW": case "WF":
                 //fire water
@@ -170,7 +169,9 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "EI":  case "IE":
                 //earth wind
-
+                GameObject reversePosition = Instantiate(GameController.Skills[5], anchor.transform.position, quaternion.identity);
+                reversePosition.transform.forward = transform.forward;
+                reversePosition.GetComponent<ReversePosition>().Init(gameObject);
                 break;
             case "WI":  case "IW":
                 //water wind

@@ -1,17 +1,15 @@
-using System;
 using UnityEngine;
 
-public class Fireball : MonoBehaviour
+public class Wave : MonoBehaviour
 {
     public float damage;
 
     private Rigidbody _rb;
 
-  
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        Destroy(gameObject,10);
+        Destroy(gameObject,4);
     }
 
     private void Update()
