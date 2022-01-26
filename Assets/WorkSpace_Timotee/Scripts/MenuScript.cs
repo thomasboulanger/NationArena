@@ -44,4 +44,9 @@ public class MenuScript : MonoBehaviour
                 break;
         }
     }
+
+    public void QuitApp()
+    {
+        Application.Quit();
+    }
 }
