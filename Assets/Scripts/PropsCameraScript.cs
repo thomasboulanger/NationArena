@@ -10,6 +10,7 @@ public class PropsCameraScript : MonoBehaviour
     public float distance;
     public float rotateSpeed;
     public float baseAngle;
+    public float baseHeight;
     
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,7 @@ public class PropsCameraScript : MonoBehaviour
         baseAngle = baseAngle / 180;
         _target = GameObject.FindWithTag("Arena");
         transform.position =
-            new Vector3((float) Math.Sin(baseAngle * Math.PI) * distance, 5, (float) Math.Cos(baseAngle * Math.PI) * distance);
+            new Vector3((float) Math.Sin(baseAngle * Math.PI) * distance, baseHeight, (float) Math.Cos(baseAngle * Math.PI) * distance);
     }
 
     // Update is called once per frame
