@@ -14,7 +14,7 @@ public class MaterialPropertyModifier : MonoBehaviour
 
     private float _groundtimer;
     private bool _dissolveOneLayer;
-    private int _actualLayer = 3;
+    [HideInInspector]public int _actualLayer = 3;
     
     private static readonly int DissolveValue = Shader.PropertyToID("_DissolveValue");
 

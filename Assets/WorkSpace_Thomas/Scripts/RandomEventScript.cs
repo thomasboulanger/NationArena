@@ -15,26 +15,25 @@ public class RandomEventScript : MonoBehaviour
     [Header("Possible Event")] 
     public bool LightsOutEventPossible = true;
     public bool SpawnRandomPillarEventPossible = true;
-    public bool SpawnAddFenceEventPossible = true;
-    
+
     [Header("Lights off Event")]
     public LightsOffPresets LightOffEventPreset;
-    public float FogFadeTime;
     [HideInInspector]public bool IsInLOEvent;
 
     [Header("Add random pillars")] 
     public GameObject Arena;
-    public GameObject PillarPrefab;
     public int MinPillarsNumber;
     public int MaxPillarsNumber;
     public bool PillarGoToCellCenter;
-    
+    public List<GameObject> PillarPrefabs;
+
     [HideInInspector]public List<GameObject> ActivePillars = new List<GameObject>();
 
     [Space]
     //Privates
     private int CurrentPlayingEvent;
     [SerializeField] private float BaseTimer;
+    private MaterialPropertyModifier _hexagonModifier;
 
     float timer;
     float roundTimer;
@@ -43,6 +42,8 @@ public class RandomEventScript : MonoBehaviour
     {
         timer = BaseTimer;
         roundTimer = RoundTime;
+
+        _hexagonModifier = FindObjectOfType<MaterialPropertyModifier>();
     }
 
     private void Update()
@@ -62,6 +63,8 @@ public class RandomEventScript : MonoBehaviour
             
             timer = BaseTimer;
         }
+        
+        CheckForFenceDestroy();
     }
 
     void LaunchRandomEvent()
@@ -69,12 +72,11 @@ public class RandomEventScript : MonoBehaviour
         Debug.Log("Launching random event");
         
         float chanceToLaunchLOEvent = Random.Range(0, 100);
-        float chanceToLaunchAFEvent = Random.Range(0, 100);
         float chanceToLaunchSPEvent = Random.Range(0, 100);
 
-        if (chanceToLaunchLOEvent > chanceToLaunchAFEvent && chanceToLaunchLOEvent > chanceToLaunchSPEvent)if(LightsOutEventPossible) StartLightOffEvent();
-        if (chanceToLaunchSPEvent > chanceToLaunchAFEvent && chanceToLaunchSPEvent > chanceToLaunchLOEvent)if(SpawnRandomPillarEventPossible) StartPillarSpawnEvent();
-        if (chanceToLaunchAFEvent > chanceToLaunchSPEvent && chanceToLaunchAFEvent > chanceToLaunchLOEvent)if(SpawnAddFenceEventPossible) StartAddFenceEvent();
+        if (chanceToLaunchLOEvent > chanceToLaunchSPEvent)if(LightsOutEventPossible) StartLightOffEvent();
+        
+        if (chanceToLaunchSPEvent > chanceToLaunchLOEvent)if(SpawnRandomPillarEventPossible) StartPillarSpawnEvent();
     }
 
     [ContextMenu("Start lights off event")]
@@ -83,15 +85,17 @@ public class RandomEventScript : MonoBehaviour
         //determine la durée de l'évenement aléatoirement a chaque lancement
         float eventDuration = Random.Range(LightOffEventPreset.EventMinDuration, LightOffEventPreset.EventMaxDuration);
 
-        if (CurrentPlayingEvent < MaxEventAtTheSameTime)
-        {
-            if (IsInLOEvent == false) StartCoroutine(LightsOffEvent(eventDuration));
-        }
+        if (CurrentPlayingEvent < MaxEventAtTheSameTime) { if (IsInLOEvent == false) StartCoroutine(LightsOffEvent(eventDuration));}
     }
 
-    public void StartAddFenceEvent()
+    void CheckForFenceDestroy()
     {
-        Debug.Log("Added Fences");
+        if (_hexagonModifier._actualLayer < 3)
+        {
+            GameObject fenceHolder = GameObject.FindGameObjectWithTag("Fence");
+            
+            Destroy(fenceHolder);
+        }
     }
 
     public void StartPillarSpawnEvent()
@@ -106,10 +110,8 @@ public class RandomEventScript : MonoBehaviour
         }
         int NumberOfPillarsToSpawn = Random.Range(MinPillarsNumber, MaxPillarsNumber);
 
-        if (roundTimer < RoundTime / 3) NumberOfPillarsToSpawn = NumberOfPillarsToSpawn / 2; 
-
-
-
+        if (roundTimer < RoundTime / 3) NumberOfPillarsToSpawn = NumberOfPillarsToSpawn / 2;
+        
         float minX = 0, maxX = 0, minZ = 0, maxZ = 0;
 
         for (int i = 0; i < Arena.transform.childCount; i++)
@@ -122,8 +124,9 @@ public class RandomEventScript : MonoBehaviour
 
         for (int i = 0; i < NumberOfPillarsToSpawn; i++)
         {
+            int prefabsIndex =Random.Range(0, PillarPrefabs.Count) ;
             Vector3 position = new Vector3(Random.Range(minX,maxX),Random.Range(10,30),Random.Range(minZ,maxZ));
-            GameObject newPillar = Instantiate(PillarPrefab, position, quaternion.identity);
+            GameObject newPillar = Instantiate(PillarPrefabs[prefabsIndex], position, quaternion.identity);
             ActivePillars.Add(newPillar);
         }
         
@@ -134,29 +137,28 @@ public class RandomEventScript : MonoBehaviour
     {
         CurrentPlayingEvent++;
         IsInLOEvent = true;
-        FadeFog(true);
+        RenderSettings.fogDensity = 0;
         RenderSettings.fog = true;
+        StartCoroutine("FogFadeIn");
         RenderSettings.fogColor = LightOffEventPreset.FogColor;
         RenderSettings.haloStrength = LightOffEventPreset.HaloStrength;
         yield return new WaitForSeconds(time);
-        FadeFog(false);
+        
         RenderSettings.fog = false;
         IsInLOEvent = false;
         CurrentPlayingEvent--;
         yield return new WaitForSeconds(0.5f);
+        
         RenderSettings.fog = false;
     }
 
-    void FadeFog(bool state)
+    IEnumerator FogFadeIn()
     {
-        switch (state)
+        for (float f = 0; f < LightOffEventPreset.FogDensity ; f += 0.1f)
         {
-            case true:
-                RenderSettings.fogDensity = Mathf.Lerp(0, LightOffEventPreset.FogDensity, FogFadeTime);
-                break;
-            case false:
-                RenderSettings.fogDensity = Mathf.Lerp(LightOffEventPreset.FogDensity, 0 , FogFadeTime);
-                break;
+            RenderSettings.fogDensity = f;
         }
+
+        yield return new WaitForSeconds(.5f);
     }
 }
