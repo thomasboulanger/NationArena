@@ -13,14 +13,15 @@ public class PlayerInputScript : MonoBehaviour
     public GameObject anchorGround;
     public GameObject anchor;
     public GameObject visualGameObject;
-    public Material blue, green, purple, orange;
+    public GameObject animatorGameObject;
+    public Material[] playerMat;
 
     [HideInInspector]
     public float RepulseForceModifier = 1;
 
 
-   
-    
+
+    private Animator _animator;
     private Rigidbody _rigidbody;
     private Vector2 _inputVector;
     private string _elementInMemory = "";
@@ -39,15 +40,17 @@ public class PlayerInputScript : MonoBehaviour
     void Start()
     {
         playerList.Add(gameObject);
+        _animator = animatorGameObject.GetComponent<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
             {
                 transform.position = GameController.spawnPoints[i].transform.position;
-                transform.name = "Joueur " + i + 1;
+                transform.name = "Player " + i + 1;
+                visualGameObject.transform.GetComponent<Renderer>().material = playerMat[i];
             }
         }
-        _rigidbody = GetComponent<Rigidbody>();
         speedModifier = 1;
     }
 
@@ -75,9 +78,16 @@ public class PlayerInputScript : MonoBehaviour
         }
 
         if (_inputVector != Vector2.zero)
-            transform.forward = new Vector3(transform.forward.x + tmpVec.x, transform.forward.y ,transform.forward.z + tmpVec.z);
+        {
+            transform.forward = new Vector3(transform.forward.x + tmpVec.x, transform.forward.y,
+                transform.forward.z + tmpVec.z);
+            _animator.SetBool("isMoving",true);
+        }
         else
+        {
             _rigidbody.angularVelocity = Vector3.zero;
+            _animator.SetBool("isMoving",false);
+        }
     }
     
     private bool DecrementCooldown(float Cooldown, float timer)
@@ -135,27 +145,39 @@ public class PlayerInputScript : MonoBehaviour
                 GameObject fireball = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
                 fireball.transform.forward = transform.forward;
                 fireball.GetComponent<KnockBack>().Init(gameObject, 500, 5, true);
+                ActivateCastAnimation("Cast");
+                _isFireUp = false;
                 break;
             case "E":
                 //earth
-                
+                GameObject earth = Instantiate(GameController.Skills[2], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
+                earth.transform.forward = transform.forward;
+                //earth.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
+                ActivateCastAnimation("CastOnGround");
+                _isEarthUp = false;
                 break;
             case "W":
                 //water
                 GameObject wave = Instantiate(GameController.Skills[1], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
                 wave.transform.forward = transform.forward;
                 wave.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
+                ActivateCastAnimation("CastOnGround");
+                _isWaterUp = false;
                 break;
             case "I":
                 //wind
                 GameObject wind = Instantiate(GameController.Skills[3], anchor.transform.position + transform.forward * 2, quaternion.identity);
                 wind.transform.forward = transform.forward;
+                ActivateCastAnimation("Cast");
+                _isWindUp = false;
                 break;
             case "FE" : case "EF":
                 //fire earth
                 GameObject meteor = Instantiate(GameController.Skills[5], transform.position + Vector3.up * 7, quaternion.identity);
                 meteor.transform.forward = transform.forward;
-                
+                ActivateCastAnimation("Cast");
+                _isFireUp = false;
+                _isEarthUp = false;
                 break;
             case "FW": case "WF":
                 //fire water
@@ -165,6 +187,9 @@ public class PlayerInputScript : MonoBehaviour
                 //fire wind
                 GameObject tornado = Instantiate(GameController.Skills[6], anchor.transform.position, quaternion.identity);
                 tornado.transform.forward = transform.forward;
+                ActivateCastAnimation("Cast");
+                _isFireUp = false;
+                _isWindUp = false;
                 break;
             case "EW": case "WE":
                 //earth water
@@ -172,23 +197,37 @@ public class PlayerInputScript : MonoBehaviour
                 Destroy(armor.gameObject,10);
                 StartCoroutine(armorlifetime());
                 armor.transform.SetParent(transform);
+                ActivateCastAnimation("Cast");
+                _isEarthUp = false;
+                _isWaterUp = false;
                 break;
             case "EI":  case "IE":
                 //earth wind
                 GameObject reversePosition = Instantiate(GameController.Skills[9], anchor.transform.position, quaternion.identity);
                 reversePosition.transform.forward = transform.forward;
                 reversePosition.GetComponent<ReversePosition>().Init(gameObject);
+                ActivateCastAnimation("Cast");
+                _isWindUp = false;
+                _isEarthUp = false;
                 break;
             case "WI":  case "IW":
                 //water wind
                 GameObject iceWall = Instantiate(GameController.Skills[8], anchorGround.transform.position, quaternion.identity);
                 iceWall.transform.forward = transform.forward;
+                ActivateCastAnimation("CastOnGround");
+                _isWaterUp = false;
+                _isWindUp = false;
                 break;
             default:
                 Debug.LogError("ton switch deconne");
                 break;
         }
         _elementInMemory = "";
+    }
+
+    private void ActivateCastAnimation(string str)
+    {
+        _animator.Play(str);
     }
 
     IEnumerator armorlifetime()

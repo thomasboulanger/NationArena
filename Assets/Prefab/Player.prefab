@@ -93,6 +93,12 @@ MonoBehaviour:
   anchorGround: {fileID: 6336868216622280125}
   anchor: {fileID: 2499075229568136343}
   visualGameObject: {fileID: 1051533678529175661}
+  animatorGameObject: {fileID: 3647235746617182596}
+  playerMat:
+  - {fileID: 2100000, guid: 7caff7e880f9dda419e31274333c602e, type: 2}
+  - {fileID: 2100000, guid: e34a4d1b45f87a14f8fb0fdef5b2ddd7, type: 2}
+  - {fileID: 2100000, guid: 4dd513bf986c8734cabe1ea500659a3b, type: 2}
+  - {fileID: 2100000, guid: 86b19c95a52358449857755bbbe528b6, type: 2}
   RepulseForceModifier: 1
 --- !u!54 &5402562889239585875
 Rigidbody:
@@ -213,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -0.83
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -273,6 +279,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 51e04a338d91f2344930d040f82ac2c9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
+--- !u!1 &3647235746617182596 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
+  m_PrefabInstance: {fileID: 4493743912585032917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4167594624540021566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}

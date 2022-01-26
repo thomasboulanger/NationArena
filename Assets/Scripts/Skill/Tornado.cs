@@ -9,7 +9,7 @@ public class Tornado : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        Destroy(gameObject,3);
+        Destroy(gameObject,7);
     }
 
     private void Update()
