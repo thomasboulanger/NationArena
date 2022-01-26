@@ -13,8 +13,11 @@ public class PlayerInputScript : MonoBehaviour
     public float speed = 1f;
     public GameObject anchorGround;
     public GameObject anchor;
+    public GameObject visualGameObject;
+
     [HideInInspector]
     public float RepulseForceModifier = 1;
+
 
    
     

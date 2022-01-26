@@ -92,6 +92,7 @@ MonoBehaviour:
   speed: 10
   anchorGround: {fileID: 6336868216622280125}
   anchor: {fileID: 2499075229568136343}
+  visualGameObject: {fileID: 1051533678529175661}
   RepulseForceModifier: 1
 --- !u!54 &5402562889239585875
 Rigidbody:
@@ -275,5 +276,10 @@ PrefabInstance:
 --- !u!4 &4167594624540021566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
+  m_PrefabInstance: {fileID: 4493743912585032917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1051533678529175661 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5707415289040005960, guid: df4c9a878fc5629428fed1fbdb0d59a4, type: 3}
   m_PrefabInstance: {fileID: 4493743912585032917}
   m_PrefabAsset: {fileID: 0}
