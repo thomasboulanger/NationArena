@@ -11,6 +11,7 @@ TagManager:
   - GroundLayer2
   - GroundLayer3
   - Hexagon
+  - Pillar
   layers:
   - Default
   - TransparentFX

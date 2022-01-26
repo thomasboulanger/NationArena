@@ -10,6 +10,7 @@ public class RandomEventScript : MonoBehaviour
     [Header("General Event")] 
     [Range(1,10)]public int MaxEventAtTheSameTime;
     [Range(0, 100)] public int PercentageForNewEvent = 35;
+    public float RoundTime;
 
     [Header("Possible Event")] 
     public bool LightsOutEventPossible = true;
@@ -28,7 +29,7 @@ public class RandomEventScript : MonoBehaviour
     public int MaxPillarsNumber;
     public bool PillarGoToCellCenter;
     
-    private List<GameObject> ActivePillars = new List<GameObject>();
+    [HideInInspector]public List<GameObject> ActivePillars = new List<GameObject>();
 
     [Space]
     //Privates
@@ -36,14 +37,18 @@ public class RandomEventScript : MonoBehaviour
     [SerializeField] private float BaseTimer;
 
     float timer;
+    float roundTimer;
 
     private void Start()
     {
         timer = BaseTimer;
+        roundTimer = RoundTime;
     }
 
     private void Update()
     {
+        roundTimer -= Time.deltaTime;
+        
         if (timer >= 0)
         {
             timer -= Time.deltaTime;
@@ -69,7 +74,7 @@ public class RandomEventScript : MonoBehaviour
 
         if (chanceToLaunchLOEvent > chanceToLaunchAFEvent && chanceToLaunchLOEvent > chanceToLaunchSPEvent)if(LightsOutEventPossible) StartLightOffEvent();
         if (chanceToLaunchSPEvent > chanceToLaunchAFEvent && chanceToLaunchSPEvent > chanceToLaunchLOEvent)if(SpawnRandomPillarEventPossible) StartPillarSpawnEvent();
-        if (chanceToLaunchAFEvent > chanceToLaunchSPEvent && chanceToLaunchAFEvent > chanceToLaunchLOEvent)if(SpawnRandomPillarEventPossible) StartAddFenceEvent();
+        if (chanceToLaunchAFEvent > chanceToLaunchSPEvent && chanceToLaunchAFEvent > chanceToLaunchLOEvent)if(SpawnAddFenceEventPossible) StartAddFenceEvent();
     }
 
     [ContextMenu("Start lights off event")]
@@ -91,7 +96,7 @@ public class RandomEventScript : MonoBehaviour
 
     public void StartPillarSpawnEvent()
     {
-        if (ActivePillars.Count > 3)
+        if (roundTimer < RoundTime / 3 ? ActivePillars.Count > 0 : ActivePillars.Count > 3)
         {
             for (int i = 0; i < ActivePillars.Count; i++)
             {
@@ -100,6 +105,11 @@ public class RandomEventScript : MonoBehaviour
             }  
         }
         int NumberOfPillarsToSpawn = Random.Range(MinPillarsNumber, MaxPillarsNumber);
+
+        if (roundTimer < RoundTime / 3) NumberOfPillarsToSpawn = NumberOfPillarsToSpawn / 2; 
+
+
+
         float minX = 0, maxX = 0, minZ = 0, maxZ = 0;
 
         for (int i = 0; i < Arena.transform.childCount; i++)
@@ -112,7 +122,7 @@ public class RandomEventScript : MonoBehaviour
 
         for (int i = 0; i < NumberOfPillarsToSpawn; i++)
         {
-            Vector3 position = new Vector3(Random.Range(minX,maxX),5,Random.Range(minZ,maxZ));
+            Vector3 position = new Vector3(Random.Range(minX,maxX),Random.Range(10,30),Random.Range(minZ,maxZ));
             GameObject newPillar = Instantiate(PillarPrefab, position, quaternion.identity);
             ActivePillars.Add(newPillar);
         }
@@ -148,7 +158,5 @@ public class RandomEventScript : MonoBehaviour
                 RenderSettings.fogDensity = Mathf.Lerp(LightOffEventPreset.FogDensity, 0 , FogFadeTime);
                 break;
         }
-        
-
     }
 }

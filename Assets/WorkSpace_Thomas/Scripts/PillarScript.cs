@@ -20,8 +20,8 @@ public class PillarScript : MonoBehaviour
         
         if (EventManager.PillarGoToCellCenter) if (hit.transform.name == "HitBox") 
             Parent.transform.position = new Vector3(hit.transform.position.x, Parent.transform.position.y, hit.transform.position.z);
-            
-        
+
+        if (hit.transform.CompareTag("Pillar")) Destroy(Parent);
     }
     
     private void OnTriggerEnter(Collider other)
@@ -30,7 +30,7 @@ public class PillarScript : MonoBehaviour
 
         if (other.name == "HitBox") Parent.transform.parent = other.transform.parent.transform.GetChild(0);
 
-        if (other.name == "pillar") Destroy(Parent);
+        if (other.CompareTag("Pillar")) Destroy(Parent);
 
         //if (other.CompareTag("Player"))
         //{
@@ -43,5 +43,10 @@ public class PillarScript : MonoBehaviour
     {
         Gizmos.color =  Color.red;
         Gizmos.DrawLine(gameObject.transform.position, new Vector3(gameObject.transform.position.x ,gameObject.transform.position.y - 100, gameObject.transform.position.z));
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.ActivePillars.Remove(Parent);
     }
 }
