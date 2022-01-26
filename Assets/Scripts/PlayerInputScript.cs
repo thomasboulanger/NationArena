@@ -142,81 +142,111 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "F":
                 //fire
-                GameObject fireball = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
-                fireball.transform.forward = transform.forward;
-                fireball.GetComponent<KnockBack>().Init(gameObject, 500, 5, true);
-                ActivateCastAnimation("Cast");
-                _isFireUp = false;
+                if (_isFireUp)
+                {
+                    GameObject fireball = Instantiate(GameController.Skills[0], anchor.transform.position, quaternion.identity);
+                    fireball.transform.forward = transform.forward;
+                    fireball.GetComponent<KnockBack>().Init(gameObject, 500, 5, true);
+                    ActivateCastAnimation("Cast");
+                    _isFireUp = false;
+                }
                 break;
             case "E":
                 //earth
-                GameObject earth = Instantiate(GameController.Skills[2], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
-                earth.transform.forward = transform.forward;
-                //earth.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
-                ActivateCastAnimation("CastOnGround");
-                _isEarthUp = false;
+                if (_isEarthUp)
+                {
+                    GameObject earth = Instantiate(GameController.Skills[2], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
+                    earth.transform.forward = transform.forward;
+                    //earth.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
+                    ActivateCastAnimation("CastOnGround");
+                    _isEarthUp = false;
+                }
                 break;
             case "W":
                 //water
-                GameObject wave = Instantiate(GameController.Skills[1], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
-                wave.transform.forward = transform.forward;
-                wave.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
-                ActivateCastAnimation("CastOnGround");
-                _isWaterUp = false;
+                if (_isWaterUp)
+                {
+                    GameObject wave = Instantiate(GameController.Skills[1], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
+                    wave.transform.forward = transform.forward;
+                    wave.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
+                    ActivateCastAnimation("CastOnGround");
+                    _isWaterUp = false;   
+                }
                 break;
             case "I":
                 //wind
-                GameObject wind = Instantiate(GameController.Skills[3], anchor.transform.position + transform.forward * 2, quaternion.identity);
-                wind.transform.forward = transform.forward;
-                ActivateCastAnimation("Cast");
-                _isWindUp = false;
+                if (_isWindUp)
+                {
+                    GameObject wind = Instantiate(GameController.Skills[3], anchor.transform.position + transform.forward * 2, quaternion.identity);
+                    wind.transform.forward = transform.forward;
+                    ActivateCastAnimation("Cast");
+                    _isWindUp = false;
+                }
                 break;
             case "FE" : case "EF":
                 //fire earth
-                GameObject meteor = Instantiate(GameController.Skills[5], transform.position + Vector3.up * 7, quaternion.identity);
-                meteor.transform.forward = transform.forward;
-                ActivateCastAnimation("Cast");
-                _isFireUp = false;
-                _isEarthUp = false;
+                if (_isFireUp && _isEarthUp)
+                {
+                    GameObject meteor = Instantiate(GameController.Skills[5], transform.position + Vector3.up * 7, quaternion.identity);
+                    meteor.transform.forward = transform.forward;
+                    ActivateCastAnimation("Cast");
+                    _isFireUp = false;
+                    _isEarthUp = false;
+                }
                 break;
             case "FW": case "WF":
                 //fire water
-
+                if (_isFireUp && _isWaterUp)
+                {
+                    
+                }
                 break;
             case "FI": case "IF":
                 //fire wind
-                GameObject tornado = Instantiate(GameController.Skills[6], anchor.transform.position, quaternion.identity);
-                tornado.transform.forward = transform.forward;
-                ActivateCastAnimation("Cast");
-                _isFireUp = false;
-                _isWindUp = false;
+                if (_isFireUp && _isWindUp)
+                {
+                    GameObject tornado = Instantiate(GameController.Skills[6], anchor.transform.position, quaternion.identity);
+                    tornado.transform.forward = transform.forward;
+                    ActivateCastAnimation("Cast");
+                    _isFireUp = false;
+                    _isWindUp = false;
+                }
                 break;
             case "EW": case "WE":
                 //earth water
-                GameObject armor = Instantiate(GameController.Skills[7], transform.position + transform.up, quaternion.identity);
-                Destroy(armor.gameObject,10);
-                StartCoroutine(armorlifetime());
-                armor.transform.SetParent(transform);
-                ActivateCastAnimation("Cast");
-                _isEarthUp = false;
-                _isWaterUp = false;
+                if (_isEarthUp && _isWaterUp)
+                {
+                    GameObject armor = Instantiate(GameController.Skills[7], transform.position + transform.up, quaternion.identity);
+                    Destroy(armor.gameObject,10);
+                    StartCoroutine(armorlifetime());
+                    armor.transform.SetParent(transform);
+                    ActivateCastAnimation("Cast");
+                    _isEarthUp = false;
+                    _isWaterUp = false;
+                }
                 break;
             case "EI":  case "IE":
                 //earth wind
-                GameObject reversePosition = Instantiate(GameController.Skills[9], anchor.transform.position, quaternion.identity);
-                reversePosition.transform.forward = transform.forward;
-                reversePosition.GetComponent<ReversePosition>().Init(gameObject);
-                ActivateCastAnimation("Cast");
-                _isWindUp = false;
-                _isEarthUp = false;
+                if (_isEarthUp && _isWindUp)
+                {
+                    GameObject reversePosition = Instantiate(GameController.Skills[9], anchor.transform.position, quaternion.identity);
+                    reversePosition.transform.forward = transform.forward;
+                    reversePosition.GetComponent<ReversePosition>().Init(gameObject);
+                    ActivateCastAnimation("Cast");
+                    _isWindUp = false;
+                    _isEarthUp = false;
+                }
                 break;
             case "WI":  case "IW":
                 //water wind
-                GameObject iceWall = Instantiate(GameController.Skills[8], anchorGround.transform.position, quaternion.identity);
-                iceWall.transform.forward = transform.forward;
-                ActivateCastAnimation("CastOnGround");
-                _isWaterUp = false;
-                _isWindUp = false;
+                if (_isWaterUp && _isWindUp)
+                {
+                    GameObject iceWall = Instantiate(GameController.Skills[8], anchorGround.transform.position, quaternion.identity);
+                    iceWall.transform.forward = transform.forward;
+                    ActivateCastAnimation("CastOnGround");
+                    _isWaterUp = false;
+                    _isWindUp = false;
+                }
                 break;
             default:
                 Debug.LogError("ton switch deconne");
