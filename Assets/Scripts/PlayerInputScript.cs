@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +13,7 @@ public class PlayerInputScript : MonoBehaviour
     public GameObject anchorGround;
     public GameObject anchor;
     public GameObject visualGameObject;
+    public Material blue, green, purple, orange;
 
     [HideInInspector]
     public float RepulseForceModifier = 1;
@@ -163,7 +163,8 @@ public class PlayerInputScript : MonoBehaviour
                 break;
             case "FI": case "IF":
                 //fire wind
-
+                GameObject tornado = Instantiate(GameController.Skills[6], anchor.transform.position, quaternion.identity);
+                tornado.transform.forward = transform.forward;
                 break;
             case "EW": case "WE":
                 //earth water
