@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -9,7 +10,6 @@ public class PlayerInputScript : MonoBehaviour
 {
     public static List<GameObject> playerList = new List<GameObject>();
 
-    public float lerpSpeed = 7f;
     public float speed = 1f;
     public GameObject anchorGround;
     public GameObject anchor;
@@ -17,8 +17,8 @@ public class PlayerInputScript : MonoBehaviour
     public GameObject animatorGameObject;
     public Material[] playerMat;
 
-    [HideInInspector]
-    public float RepulseForceModifier = 1;
+    [HideInInspector] public float RepulseForceModifier = 1;
+    [HideInInspector] public bool isDead;
     
     [SerializeField]
     private List<GameObject> _hpBars = new List<GameObject>();
@@ -27,7 +27,8 @@ public class PlayerInputScript : MonoBehaviour
     private Vector2 _inputVector;
     private string _elementInMemory = "";
     private float speedModifier;
-    private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp, _isDead;
+    private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp;
+    [SerializeField]
     private float 
         _fireCooldown,
         _earthCooldown,
@@ -43,7 +44,7 @@ public class PlayerInputScript : MonoBehaviour
         playerList.Add(gameObject);
         _animator = animatorGameObject.GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _isDead = false;
+        isDead = false;
         foreach (GameObject hpBar in GameObject.FindGameObjectsWithTag("HealthBar"))
         {
             _hpBars.Add(hpBar);
@@ -67,15 +68,15 @@ public class PlayerInputScript : MonoBehaviour
 
     void Update()
     {
-        if (GameController.inRound && !_isDead)
+        if (GameController.inRound && !isDead)
         {
             MovePlayer();
-            if (!_isFireUp) _isFireUp = DecrementCooldown(_fireCooldown, _fireTimer);
-            if (!_isEarthUp) _isEarthUp = DecrementCooldown(_earthCooldown, _earthTimer);
-            if (!_isWaterUp) _isWaterUp = DecrementCooldown(_waterCooldown, _waterTimer);
-            if (!_isWindUp) _isWindUp = DecrementCooldown(_windCooldown, _windTimer);
+            if (!_isFireUp) _isFireUp = DecrementCooldown(_fireCooldown, ref _fireTimer);
+            if (!_isEarthUp) _isEarthUp = DecrementCooldown(_earthCooldown, ref _earthTimer);
+            if (!_isWaterUp) _isWaterUp = DecrementCooldown(_waterCooldown, ref _waterTimer);
+            if (!_isWindUp) _isWindUp = DecrementCooldown(_windCooldown, ref _windTimer);
         }
-        if (_isDead) PlayerDead();
+        if (isDead) PlayerDead();
     }
     
     private void MovePlayer()
@@ -102,9 +103,9 @@ public class PlayerInputScript : MonoBehaviour
         }
     }
     
-    private bool DecrementCooldown(float Cooldown, float timer)
+    private bool DecrementCooldown(float cooldown, ref float timer)
     {
-        if (timer < Cooldown)
+        if (timer <= cooldown)
         {
             timer += Time.deltaTime;
             return false;
@@ -210,7 +211,13 @@ public class PlayerInputScript : MonoBehaviour
                 //fire water
                 if (_isFireUp && _isWaterUp)
                 {
-                    
+                    GameObject heal = Instantiate(GameController.Skills[4], transform.position, quaternion.identity);
+                    Destroy(heal.gameObject,4);
+                    transform.GetComponent<HealthBar>().Heal(15);
+                    heal.transform.SetParent(transform);
+                    ActivateCastAnimation("CastOnGround");
+                    _isFireUp = false;
+                    _isWaterUp = false;
                 }
                 break;
             case "FI": case "IF":
@@ -274,16 +281,18 @@ public class PlayerInputScript : MonoBehaviour
 
     public void PlayAgain()
     {
+        visualGameObject.SetActive(true);
+        isDead = false;
+        _animator.SetBool("isDead",false);
+        speedModifier = 1;
+        transform.GetComponent<HealthBar>().Heal(100);
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
             {
                 transform.position = GameController.spawnPoints[i].transform.position;
-                visualGameObject.SetActive(true);
-                _animator.SetBool("isDead",false);
             }
         }
-        speedModifier = 1;
     }
 
     public void ReturnToMainMenu()
@@ -291,13 +300,21 @@ public class PlayerInputScript : MonoBehaviour
         SceneManager.LoadScene(0);
     }
     
-    private void  PlayerDead()
+    private void PlayerDead()
     {
         _animator.SetBool("isDead",true);
         StartCoroutine(DieAnim());
     }
 
-    
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.transform.CompareTag("Water"))
+        {
+            isDead = true;
+            transform.GetComponent<HealthBar>().GetHit(100);
+        }
+    }
+
     IEnumerator armorlifetime()
     {
         speedModifier = .5f;
@@ -306,6 +323,7 @@ public class PlayerInputScript : MonoBehaviour
         speedModifier = 1f;
         RepulseForceModifier = 1f;
     }
+
     IEnumerator DieAnim()
     {
         yield return new WaitForSeconds(3);

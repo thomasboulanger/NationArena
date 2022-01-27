@@ -7,6 +7,8 @@ public class PillarScript : MonoBehaviour
 {
     public GameObject Parent;
 
+    public AudioClip FallSound;
+    
     private RandomEventScript EventManager;
     
     private void Start()
@@ -28,7 +30,11 @@ public class PillarScript : MonoBehaviour
     {
         if (other.name == "Water")Destroy(Parent);
 
-        if (other.name == "HitBox") Parent.transform.parent = other.transform.parent.transform.GetChild(0);
+        if (other.name == "HitBox")
+        {
+            Parent.transform.parent = other.transform.parent.transform.GetChild(0);
+            Parent.GetComponent<AudioSource>().PlayOneShot(FallSound);
+        }
 
         if (other.CompareTag("Pillar")) Destroy(Parent);
 

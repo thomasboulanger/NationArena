@@ -22,6 +22,7 @@ public class Earth : MonoBehaviour
     {
         if (other.gameObject != _caster && other.CompareTag("Player"))
         {
+            other.transform.GetComponent<HealthBar>().GetHit(5);
             Rigidbody rb = other.GetComponent<Rigidbody>();
             rb.AddExplosionForce(500 * other.GetComponent<PlayerInputScript>().RepulseForceModifier,transform.position,5);
         }

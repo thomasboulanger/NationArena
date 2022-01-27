@@ -20,7 +20,7 @@ public class Health
         if (_life < 0) _life = 0;
         if (_life > 100) _life = 100;
         
-        return _life > 0;
+        return !(_life > 0);
     }
 
     public int GetLife()

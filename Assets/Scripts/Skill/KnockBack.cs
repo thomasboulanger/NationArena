@@ -35,6 +35,7 @@ public class KnockBack : MonoBehaviour
       {
         Rigidbody rb = player.GetComponent<Rigidbody>();
         rb.AddExplosionForce(_force * player.RepulseForceModifier,transform.position,_radius);
+        player.transform.GetComponent<HealthBar>().GetHit(10);
       }
     }
 

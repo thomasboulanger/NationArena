@@ -422,7 +422,7 @@ GameObject:
   - component: {fileID: 187610680}
   m_Layer: 0
   m_Name: Water
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4351,7 +4351,7 @@ MonoBehaviour:
   dissolveValue: 0
   DisolveMaterial: {fileID: 2100000, guid: e87422541fd4e6341b7a7b94041a365e, type: 2}
   arena: {fileID: 1423786401}
-  delayGroundFall: 45
+  delayGroundFall: 60
   tileRenderers: []
   _actualLayer: 3
 --- !u!4 &1760624498
@@ -5296,6 +5296,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8608494572005604512, guid: 87a3173ea7d05474b86655501d92f897, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608494572005604512, guid: 87a3173ea7d05474b86655501d92f897, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608494572005604512, guid: 87a3173ea7d05474b86655501d92f897, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 8608494572328245666, guid: 87a3173ea7d05474b86655501d92f897, type: 3}
       propertyPath: m_Name
       value: HealthBar1

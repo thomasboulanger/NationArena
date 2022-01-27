@@ -17,8 +17,18 @@ public class HealthBar : MonoBehaviour
 
     public void GetHit(int damage)
     {
-        _health.GetHit(damage);
-        
+       transform.GetComponent<PlayerInputScript>().isDead = _health.GetHit(damage);
+        UpdateHpOnUI();
+    }
+
+    public void Heal(int heal)
+    {
+        _health.GetHit(-heal);
+        UpdateHpOnUI();
+    }
+
+    private void UpdateHpOnUI()
+    {
         //Update le nombre de point de vie
         healthBar.GetComponentInChildren<Text>().text = _health.GetLife().ToString();
         //Recupere la liste des images
@@ -29,11 +39,6 @@ public class HealthBar : MonoBehaviour
             //Update la barre de vie
             if (img.gameObject.name == "Health")
                 img.fillAmount = ((float) _health.GetLife() / 100);
-        }
-    }
-
-    public void Heal(int heal)
-    {
-        _health.GetHit(-heal);
+        }    
     }
 }

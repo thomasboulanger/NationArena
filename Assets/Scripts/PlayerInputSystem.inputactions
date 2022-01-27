@@ -115,7 +115,7 @@
                     "id": "6c902615-1fce-4e16-a119-e1d9f395bdd4",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "InvertVector2",
+                    "processors": "InvertVector2(invertX=false,invertY=false)",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
