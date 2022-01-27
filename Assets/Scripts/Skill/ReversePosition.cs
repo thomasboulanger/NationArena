@@ -25,9 +25,7 @@ public class ReversePosition : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            Transform tmpTransform = _caster.transform;
-            _caster.transform.position = other.transform.position;
-            other.transform.position = tmpTransform.position;
+            (_caster.transform.position, other.transform.position) = (other.transform.position, _caster.transform.position);
             Destroy(gameObject);
         }
     }

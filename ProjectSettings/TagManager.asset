@@ -15,6 +15,7 @@ TagManager:
   - Arena
   - Fence
   - HealthBar
+  - Water
   layers:
   - Default
   - TransparentFX

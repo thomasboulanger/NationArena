@@ -101,6 +101,16 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4dd513bf986c8734cabe1ea500659a3b, type: 2}
   - {fileID: 2100000, guid: 86b19c95a52358449857755bbbe528b6, type: 2}
   RepulseForceModifier: 1
+  isDead: 0
+  _hpBars: []
+  _fireCooldown: 3
+  _earthCooldown: 3
+  _waterCooldown: 3
+  _windCooldown: 3
+  _fireTimer: 0
+  _earthTimer: 0
+  _waterTimer: 0
+  _windTimer: 0
 --- !u!54 &5402562889239585875
 Rigidbody:
   m_ObjectHideFlags: 0

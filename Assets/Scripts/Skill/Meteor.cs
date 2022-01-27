@@ -30,6 +30,7 @@ public class Meteor : MonoBehaviour
             {
                 Rigidbody rb = player.GetComponent<Rigidbody>();
                 rb.AddExplosionForce(1000 * player.RepulseForceModifier,transform.position,8);
+                player.transform.GetComponent<HealthBar>().GetHit(30);
             }
         } 
         Destroy(gameObject);
