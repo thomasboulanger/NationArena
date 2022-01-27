@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerInputScript : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class PlayerInputScript : MonoBehaviour
     private Vector2 _inputVector;
     private string _elementInMemory = "";
     private float speedModifier;
-    private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp;
+    private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp, _isDead;
     private float 
         _fireCooldown,
         _earthCooldown,
@@ -42,6 +43,7 @@ public class PlayerInputScript : MonoBehaviour
         playerList.Add(gameObject);
         _animator = animatorGameObject.GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _isDead = false;
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
@@ -56,7 +58,7 @@ public class PlayerInputScript : MonoBehaviour
 
     void Update()
     {
-        if (GameController.inRound)
+        if (GameController.inRound && !_isDead)
         {
             MovePlayer();
             if (!_isFireUp) _isFireUp = DecrementCooldown(_fireCooldown, _fireTimer);
@@ -64,6 +66,7 @@ public class PlayerInputScript : MonoBehaviour
             if (!_isWaterUp) _isWaterUp = DecrementCooldown(_waterCooldown, _waterTimer);
             if (!_isWindUp) _isWindUp = DecrementCooldown(_windCooldown, _windTimer);
         }
+        if (_isDead) PlayerDead();
     }
     
     private void MovePlayer()
@@ -260,6 +263,32 @@ public class PlayerInputScript : MonoBehaviour
         _animator.Play(str);
     }
 
+    public void PlayAgain()
+    {
+        for (int i = 0; i < playerList.Count; i++) 
+        {
+            if (gameObject == playerList[i])
+            {
+                transform.position = GameController.spawnPoints[i].transform.position;
+                visualGameObject.SetActive(true);
+                _animator.SetBool("isDead",false);
+            }
+        }
+        speedModifier = 1;
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    
+    private void  PlayerDead()
+    {
+        _animator.SetBool("isDead",true);
+        StartCoroutine(DieAnim());
+    }
+
+    
     IEnumerator armorlifetime()
     {
         speedModifier = .5f;
@@ -267,5 +296,10 @@ public class PlayerInputScript : MonoBehaviour
         yield return new WaitForSeconds(10);
         speedModifier = 1f;
         RepulseForceModifier = 1f;
+    }
+    IEnumerator DieAnim()
+    {
+        yield return new WaitForSeconds(3);
+        visualGameObject.SetActive(false);
     }
 }
