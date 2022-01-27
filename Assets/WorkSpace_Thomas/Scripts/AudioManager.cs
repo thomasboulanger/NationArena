@@ -6,8 +6,7 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
-    [Header("General")]
-
+    
     [Header("Intro/Outro")] 
     public List<AudioClip> IntroClips;
     public List<AudioClip> OutroClips;
@@ -16,7 +15,7 @@ public class AudioManager : MonoBehaviour
     [Header("Music Object")]
     public GameObject Caster;
     public GameObject MusicPlayer;
-    public GameObject Crowds;
+    //public GameObject Crowds;
 
     [Header("Background Sounds")]
     public List<AudioClip> BackgroundMusicClips;
@@ -50,6 +49,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("NextBackgroundSound")]
     void SelectNextBackgroundTack()
     {
         int index = Random.Range(0, BackgroundMusicClips.Count);
@@ -94,5 +94,30 @@ public class AudioManager : MonoBehaviour
                 CasterAudio.PlayOneShot(PlayerWinClip[3]);
                 break;
         }
+    }
+
+    [ContextMenu("Play Intro")]
+    public void PlayRoundIntro()
+    {
+        int index = Random.Range(0, IntroClips.Count);
+        Debug.Log("Playing intro nb" + " " + index);
+        AudioSource.PlayClipAtPoint(IntroClips[index],CasterAudio.transform.position);
+    }
+    
+    
+    [ContextMenu("Play Outro")]
+    public void PlayRoundOutro()
+    {
+        int index = Random.Range(0, OutroClips.Count);
+        Debug.Log("Playing outro nb" + " " + index);
+        AudioSource.PlayClipAtPoint(OutroClips[index],CasterAudio.transform.position);
+    }
+    
+    
+    [ContextMenu("Play Rules Audio")]
+    public void PlayRulesAudio()
+    {
+        AudioSource.PlayClipAtPoint(Rules,CasterAudio.transform.position);
+        Debug.Log("Playing rules audio");
     }
 }
