@@ -155,9 +155,9 @@ public class PlayerInputScript : MonoBehaviour
                 //earth
                 if (_isEarthUp)
                 {
-                    GameObject earth = Instantiate(GameController.Skills[2], anchorGround.transform.position + transform.forward * 2, quaternion.identity);
+                    GameObject earth = Instantiate(GameController.Skills[2], transform.position, quaternion.identity);
                     earth.transform.forward = transform.forward;
-                    //earth.GetComponent<KnockBack>().Init(gameObject, 500, 1, false);
+                    earth.GetComponent<Earth>().Init(gameObject);
                     ActivateCastAnimation("CastOnGround");
                     _isEarthUp = false;
                 }
