@@ -14,6 +14,7 @@ TagManager:
   - Pillar
   - Arena
   - Fence
+  - HealthBar
   layers:
   - Default
   - TransparentFX
