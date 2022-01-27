@@ -34,7 +34,7 @@ Material:
     m_Floats:
     - Vector1_E9AFC9CE: 0.02
     - Vector1_EFF17ED0: 30
-    - dissolveFloat: 0.39
+    - dissolveFloat: 0.4
     m_Colors:
     - Color_261633DE: {r: 0, g: 5.270588, b: 16, a: 0}
     - Color_6E64264: {r: 0.6603774, g: 0.06579299, b: 0, a: 0}

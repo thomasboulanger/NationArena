@@ -19,9 +19,9 @@ public class PlayerInputScript : MonoBehaviour
 
     [HideInInspector]
     public float RepulseForceModifier = 1;
-
-
-
+    
+    [SerializeField]
+    private List<GameObject> _hpBars = new List<GameObject>();
     private Animator _animator;
     private Rigidbody _rigidbody;
     private Vector2 _inputVector;
@@ -44,13 +44,22 @@ public class PlayerInputScript : MonoBehaviour
         _animator = animatorGameObject.GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _isDead = false;
+        foreach (GameObject hpBar in GameObject.FindGameObjectsWithTag("HealthBar"))
+        {
+            _hpBars.Add(hpBar);
+        }
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
             {
+                foreach (GameObject hpBar in _hpBars)
+                {
+                    if (hpBar.transform.name.Contains((i + 1).ToString())) transform.GetComponent<HealthBar>().healthBar = hpBar;
+                }
                 transform.position = GameController.spawnPoints[i].transform.position;
                 transform.name = "Player " + i + 1;
                 visualGameObject.transform.GetComponent<Renderer>().material = playerMat[i];
+                
             }
         }
         speedModifier = 1;
