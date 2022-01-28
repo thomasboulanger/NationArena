@@ -39,6 +39,7 @@ public class RandomEventScript : MonoBehaviour
 
     float timer;
     float roundTimer;
+    bool gameStarted;
 
     private void Start()
     {
@@ -51,12 +52,13 @@ public class RandomEventScript : MonoBehaviour
     private void Update()
     {
         roundTimer -= Time.deltaTime;
-        
-        if (timer >= 0)
+        if (gameStarted)
         {
-            timer -= Time.deltaTime;
+            if (timer >= 0)
+            {
+                timer -= Time.deltaTime;
+            }
         }
-        
         if (timer <= 0)
         {
             float chanceToLaunchEvent = Random.Range(0, 100);
@@ -128,8 +130,8 @@ public class RandomEventScript : MonoBehaviour
         {
             int prefabsIndex =Random.Range(0, PillarPrefabs.Count) ;
             Vector3 position = new Vector3(Random.Range(minX,maxX),Random.Range(10,30),Random.Range(minZ,maxZ));
-            //GameObject newPillar = Instantiate(PillarPrefabs[prefabsIndex], position, quaternion.identity);
-            //ActivePillars.Add(newPillar);
+            GameObject newPillar = Instantiate(PillarPrefabs[prefabsIndex], position, quaternion.identity);
+            ActivePillars.Add(newPillar);
         }
         
         Debug.Log("Spawned Pillars at random positions");
@@ -140,12 +142,17 @@ public class RandomEventScript : MonoBehaviour
         CurrentPlayingEvent++;
         IsInLOEvent = true;
         RenderSettings.ambientLight = Color.black;
-        //GameObject newObj = Instantiate(LightBlockerPrefab);
+        GameObject newObj = Instantiate(LightBlockerPrefab);
         yield return new WaitForSeconds(time);
         RenderSettings.ambientLight = AmbiantLightBaseColor;
-        //Destroy(newObj);
+        Destroy(newObj);
         IsInLOEvent = false;
         CurrentPlayingEvent--;
         yield return new WaitForSeconds(0.5f);
+    }
+
+    public void GameStarted()
+    {
+        gameStarted = true;
     }
 }
