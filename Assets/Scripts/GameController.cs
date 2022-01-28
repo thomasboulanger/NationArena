@@ -48,7 +48,6 @@ public class GameController : MonoBehaviour
                     alivePlayer--;
                     tmpPlayer = player;
                     _deletePlayer = true;
-                    //alivePlayers.Remove(player);
                 }
             }
 
@@ -72,7 +71,7 @@ public class GameController : MonoBehaviour
         _audioManager.OnPlayerWin(alivePlayers[0].GetComponent<PlayerInputScript>().playerIndex);
         _trigger = true;
         endPanel.SetActive(true);
-        //inRound = false;
+        inRound = false;
     }
 
     public void StartPlay()
