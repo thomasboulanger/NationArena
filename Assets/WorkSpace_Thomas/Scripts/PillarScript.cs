@@ -6,7 +6,8 @@ using UnityEngine;
 public class PillarScript : MonoBehaviour
 {
     public GameObject Parent;
-
+    public ParticleSystem GroundSlamEffect;
+    
     public AudioClip FallSound;
     
     private RandomEventScript EventManager;
@@ -34,6 +35,7 @@ public class PillarScript : MonoBehaviour
         {
             Parent.transform.parent = other.transform.parent.transform.GetChild(0);
             Parent.GetComponent<AudioSource>().PlayOneShot(FallSound);
+            GroundSlamEffect.Play();
         }
 
         if (other.CompareTag("Pillar")) Destroy(Parent);

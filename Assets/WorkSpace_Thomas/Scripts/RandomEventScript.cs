@@ -16,8 +16,10 @@ public class RandomEventScript : MonoBehaviour
     public bool LightsOutEventPossible = true;
     public bool SpawnRandomPillarEventPossible = true;
 
-    [Header("Lights off Event")]
-    public LightsOffPresets LightOffEventPreset;
+    [Header("Lights off Event")] 
+    public float MinLOEventTime, MaxLOEventTime;
+    public Color AmbiantLightBaseColor;
+    public GameObject LightBlockerPrefab;
     [HideInInspector]public bool IsInLOEvent;
 
     [Header("Add random pillars")] 
@@ -83,7 +85,7 @@ public class RandomEventScript : MonoBehaviour
     public void StartLightOffEvent()
     {
         //determine la durée de l'évenement aléatoirement a chaque lancement
-        float eventDuration = Random.Range(LightOffEventPreset.EventMinDuration, LightOffEventPreset.EventMaxDuration);
+        float eventDuration = Random.Range(MinLOEventTime, MaxLOEventTime);
 
         if (CurrentPlayingEvent < MaxEventAtTheSameTime) { if (IsInLOEvent == false) StartCoroutine(LightsOffEvent(eventDuration));}
     }
@@ -137,28 +139,13 @@ public class RandomEventScript : MonoBehaviour
     {
         CurrentPlayingEvent++;
         IsInLOEvent = true;
-        RenderSettings.fogDensity = 0;
-        RenderSettings.fog = true;
-        StartCoroutine("FogFadeIn");
-        RenderSettings.fogColor = LightOffEventPreset.FogColor;
-        RenderSettings.haloStrength = LightOffEventPreset.HaloStrength;
+        RenderSettings.ambientLight = Color.black;
+        GameObject newObj = Instantiate(LightBlockerPrefab);
         yield return new WaitForSeconds(time);
-        
-        RenderSettings.fog = false;
+        RenderSettings.ambientLight = AmbiantLightBaseColor;
+        Destroy(newObj);
         IsInLOEvent = false;
         CurrentPlayingEvent--;
         yield return new WaitForSeconds(0.5f);
-        
-        RenderSettings.fog = false;
-    }
-
-    IEnumerator FogFadeIn()
-    {
-        for (float f = 0; f < LightOffEventPreset.FogDensity ; f += 0.1f)
-        {
-            RenderSettings.fogDensity = f;
-        }
-
-        yield return new WaitForSeconds(.5f);
     }
 }

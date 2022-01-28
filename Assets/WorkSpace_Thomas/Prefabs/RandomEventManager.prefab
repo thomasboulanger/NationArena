@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6689123718294891114
+--- !u!1 &6679268989439813925
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6689123718294891113}
-  - component: {fileID: 6689123718294891112}
+  - component: {fileID: 6679268989439813926}
+  - component: {fileID: 6679268989439813927}
   m_Layer: 0
   m_Name: RandomEventManager
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6689123718294891113
+--- !u!4 &6679268989439813926
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6689123718294891114}
+  m_GameObject: {fileID: 6679268989439813925}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,13 +31,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6689123718294891112
+--- !u!114 &6679268989439813927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6689123718294891114}
+  m_GameObject: {fileID: 6679268989439813925}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73fc064ed874b2d438ee41cd84a5b9a7, type: 3}
@@ -48,7 +48,10 @@ MonoBehaviour:
   RoundTime: 140
   LightsOutEventPossible: 1
   SpawnRandomPillarEventPossible: 1
-  LightOffEventPreset: {fileID: 11400000, guid: 6ff925a6352941b479f317400cb1d36a, type: 2}
+  MinLOEventTime: 10
+  MaxLOEventTime: 20
+  AmbiantLightBaseColor: {r: 0.49803922, g: 0.627451, b: 0.6313726, a: 1}
+  LightBlockerPrefab: {fileID: 7710090285310353893, guid: 31da1c63ab245c3428eaf05d8660b7f4, type: 3}
   IsInLOEvent: 0
   Arena: {fileID: 0}
   MinPillarsNumber: 5
