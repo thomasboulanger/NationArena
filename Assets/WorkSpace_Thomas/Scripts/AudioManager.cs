@@ -23,19 +23,6 @@ public class AudioManager : MonoBehaviour
     public AudioSource CasterAudio;
     public AudioSource MusicPlayerAudio;
 
-    /*private void Start()
-    {
-        SelectNextBackgroundTack();
-    }
-
-    private void Update()
-    {
-        if (MusicPlayerAudio.clip == null)
-        {
-            SelectNextBackgroundTack();
-        }
-    }*/
-    
     [ContextMenu("NextBackgroundSound")]
     void SelectNextBackgroundTack()
     {

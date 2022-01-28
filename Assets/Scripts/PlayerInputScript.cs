@@ -45,6 +45,7 @@ public class PlayerInputScript : MonoBehaviour
         _windTimer;
 
     private bool _trigger;
+    private bool _dontCallPlayerOut;
 
     void Start()
     {
@@ -306,7 +307,6 @@ public class PlayerInputScript : MonoBehaviour
     {
         visualGameObject.SetActive(true);
         isDead = false;
-        _animator.SetBool("isDead",false);
         speedModifier = 1;
         transform.GetComponent<HealthBar>().Heal(100);
         for (int i = 0; i < playerList.Count; i++) 
@@ -321,9 +321,11 @@ public class PlayerInputScript : MonoBehaviour
     private void PlayerDead()
     {
         _trigger = true;
-        GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>().OnPlayerDeath(playerIndex);
-        _animator.SetBool("isDead",true);
-        StartCoroutine(DieAnim());
+        if (!_dontCallPlayerOut)
+        {
+            GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>().OnPlayerDeath(playerIndex);
+        }
+        ActivateCastAnimation("isDead");
     }
 
     private void OnCollisionEnter(Collision other)
@@ -331,6 +333,10 @@ public class PlayerInputScript : MonoBehaviour
         if (other.transform.CompareTag("Water"))
         {
             isDead = true;
+            if (GameController.alivePlayers.Count == 2)
+            {
+                _dontCallPlayerOut = true;
+            }
             transform.GetComponent<HealthBar>().GetHit(100);
         }
     }
@@ -342,11 +348,5 @@ public class PlayerInputScript : MonoBehaviour
         yield return new WaitForSeconds(5);
         speedModifier = 1f;
         RepulseForceModifier = 1f;
-    }
-
-    IEnumerator DieAnim()
-    {
-        yield return new WaitForSeconds(3);
-        visualGameObject.SetActive(false);
     }
 }

@@ -9,12 +9,6 @@ public class HealthBar : MonoBehaviour
 
     private bool _trigger;
 
-    void Start()
-    {
-        
-        
-    }
-
     public void GetHit(int damage)
     {
        transform.GetComponent<PlayerInputScript>().isDead = _health.GetHit(damage);

@@ -5,14 +5,14 @@ public class MaterialPropertyModifier : MonoBehaviour
 {
     [Range(0, 1)]
     public float dissolveValue = 0f;
-    public Material DisolveMaterial;
     public GameObject arena;
     public float delayGroundFall;
     [Space]
     public List<Renderer> tileRenderers = new List<Renderer>();
 
 
-    private float _groundtimer;
+    [HideInInspector]
+    public float _groundtimer;
     private bool _dissolveOneLayer;
     [HideInInspector]public int _actualLayer = 3;
     
@@ -97,4 +97,19 @@ public class MaterialPropertyModifier : MonoBehaviour
     {
         Shader.SetGlobalFloat(DissolveValue, DisolveValue); // If Property is not exposed in shader
     }*/
+    public void Init(GameObject go)
+    {
+        _actualLayer = 3;
+        _groundtimer = 0;
+        tileRenderers.Clear();
+        arena = go;
+        for (int i = 0; i < arena.transform.childCount; i++)
+        {
+            if (!arena.transform.GetChild(i).CompareTag("GroundInamovible"))
+            {
+                tileRenderers.Add(arena.transform.GetChild(i).GetChild(0).GetComponent<Renderer>());
+            }
+        }
+        
+    }
 }

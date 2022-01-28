@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PropsCameraScript : MonoBehaviour
@@ -16,7 +14,7 @@ public class PropsCameraScript : MonoBehaviour
     void Start()
     {
         baseAngle = baseAngle / 180;
-        _target = GameObject.FindWithTag("Arena");
+        _target = GameObject.FindWithTag("GameController");
         transform.position =
             new Vector3((float) Math.Sin(baseAngle * Math.PI) * distance, baseHeight, (float) Math.Cos(baseAngle * Math.PI) * distance);
     }
