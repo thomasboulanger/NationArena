@@ -16,6 +16,6 @@ public class Fireball : MonoBehaviour
 
     private void Update()
     {
-        _rb.AddForce(transform.forward);
+        _rb.AddForce(transform.forward * 2);
     }
 }

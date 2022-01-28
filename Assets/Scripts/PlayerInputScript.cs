@@ -5,6 +5,7 @@ using System.Net.Mime;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -168,6 +169,11 @@ public class PlayerInputScript : MonoBehaviour
         _elementInMemory += "I";
         if (_elementInMemory.Length > 2) _elementInMemory = _elementInMemory.Substring(1);
         if (_elementInMemory == "II") _elementInMemory = "I";
+    }
+
+    private void OnPlayerLeft()
+    {
+        Debug.Log("toto");
     }
 
     private void OnCastSpell()

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
@@ -40,7 +42,7 @@ public class GameController : MonoBehaviour
     {
         if (inRound)
         {
-            GameObject tmpPlayer = new GameObject();
+            GameObject tmpPlayer = null;
             foreach (GameObject player in alivePlayers)
             {
                 if (player.GetComponent<PlayerInputScript>().isDead)
@@ -107,6 +109,7 @@ public class GameController : MonoBehaviour
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene(0);
+        //Application.LoadLevel(Application.loadedLevel);
     }
     public void PlayerReady(int index)
     {

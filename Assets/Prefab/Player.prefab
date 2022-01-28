@@ -89,8 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca473d9b3a066042979847111d48d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSpeed: 10
-  speed: 10
+  speed: 5
   anchorGround: {fileID: 6336868216622280125}
   anchor: {fileID: 2499075229568136343}
   visualGameObject: {fileID: 1051533678529175661}
@@ -102,6 +101,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 86b19c95a52358449857755bbbe528b6, type: 2}
   RepulseForceModifier: 1
   isDead: 0
+  playerIndex: 0
   _hpBars: []
   _fireCooldown: 3
   _earthCooldown: 3
