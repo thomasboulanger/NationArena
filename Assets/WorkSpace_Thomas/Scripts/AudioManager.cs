@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
@@ -12,32 +13,18 @@ public class AudioManager : MonoBehaviour
     public List<AudioClip> OutroClips;
     public AudioClip Rules;
     
-    [Header("Music Object")]
-    public GameObject Caster;
-    public GameObject MusicPlayer;
-    //public GameObject Crowds;
-
     [Header("Background Sounds")]
     public List<AudioClip> BackgroundMusicClips;
-    //public AudioClip HappyCrowd;
-    //public AudioClip SadCrowd;
-    
-    [Header("Player Sounds")]
-    public List<AudioClip> PlayerDeathClip;
-    public List<AudioClip> PlayerWinClip;
+   
+    [FormerlySerializedAs("PlayerDeathClip")] [Header("Player Sounds")]
     public List<AudioClip> PlayerOutClip;
+    public List<AudioClip> PlayerWinClip;
     
-    
-    //Private
-    private AudioSource CasterAudio;
-    private AudioSource MusicPlayerAudio;
-    //private AudioSource CrowdAudio;
+    public AudioSource CasterAudio;
+    public AudioSource MusicPlayerAudio;
 
     private void Start()
     {
-        CasterAudio = Caster.GetComponent<AudioSource>();
-        MusicPlayerAudio = MusicPlayer.GetComponent<AudioSource>();
-        
         SelectNextBackgroundTack();
     }
 
@@ -53,7 +40,7 @@ public class AudioManager : MonoBehaviour
     void SelectNextBackgroundTack()
     {
         int index = Random.Range(0, BackgroundMusicClips.Count);
-
+        MusicPlayerAudio.volume = .3f;
         MusicPlayerAudio.PlayOneShot(BackgroundMusicClips[index]);
     }
 
@@ -62,17 +49,17 @@ public class AudioManager : MonoBehaviour
     {
         switch (PlayerNumber)
         {
+            case 0:
+                CasterAudio.PlayOneShot(PlayerOutClip[PlayerNumber]);
+                break;
             case 1:
-                CasterAudio.PlayOneShot(PlayerDeathClip[0]);
+                CasterAudio.PlayOneShot(PlayerOutClip[PlayerNumber]);
                 break;
             case 2:
-                CasterAudio.PlayOneShot(PlayerDeathClip[1]);
+                CasterAudio.PlayOneShot(PlayerOutClip[PlayerNumber]);
                 break;
             case 3:
-                CasterAudio.PlayOneShot(PlayerDeathClip[2]);
-                break;
-            case 4:
-                CasterAudio.PlayOneShot(PlayerDeathClip[3]);
+                CasterAudio.PlayOneShot(PlayerOutClip[PlayerNumber]);
                 break;
         }
     }
@@ -81,17 +68,17 @@ public class AudioManager : MonoBehaviour
     {
         switch (PlayerNumber)
         {
+            case 0:
+                CasterAudio.PlayOneShot(PlayerWinClip[PlayerNumber]);
+                break;
             case 1:
-                CasterAudio.PlayOneShot(PlayerWinClip[0]);
+                CasterAudio.PlayOneShot(PlayerWinClip[PlayerNumber]);
                 break;
             case 2:
-                CasterAudio.PlayOneShot(PlayerWinClip[1]);
+                CasterAudio.PlayOneShot(PlayerWinClip[PlayerNumber]);
                 break;
             case 3:
-                CasterAudio.PlayOneShot(PlayerWinClip[2]);
-                break;
-            case 4:
-                CasterAudio.PlayOneShot(PlayerWinClip[3]);
+                CasterAudio.PlayOneShot(PlayerWinClip[PlayerNumber]);
                 break;
         }
     }

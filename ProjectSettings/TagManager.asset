@@ -16,6 +16,7 @@ TagManager:
   - Fence
   - HealthBar
   - Water
+  - AudioManager
   layers:
   - Default
   - TransparentFX
