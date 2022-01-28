@@ -21,7 +21,7 @@ public class Meteor : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        _colliders = Physics.OverlapSphere(transform.position, 8);
+        _colliders = Physics.OverlapSphere(transform.position, 5);
 
         foreach (Collider nearby in _colliders)
         {
@@ -29,8 +29,8 @@ public class Meteor : MonoBehaviour
             if (player)
             {
                 Rigidbody rb = player.GetComponent<Rigidbody>();
-                rb.AddExplosionForce(1000 * player.RepulseForceModifier,transform.position,8);
-                player.transform.GetComponent<HealthBar>().GetHit(30);
+                rb.AddExplosionForce(1000 * player.RepulseForceModifier,transform.position,5);
+                player.transform.GetComponent<HealthBar>().GetHit(10);
             }
         } 
         Destroy(gameObject);
