@@ -17,6 +17,7 @@ TagManager:
   - HealthBar
   - Water
   - AudioManager
+  - Cooldown
   layers:
   - Default
   - TransparentFX

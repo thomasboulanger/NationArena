@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource CasterAudio;
     public AudioSource MusicPlayerAudio;
 
-    private void Start()
+    /*private void Start()
     {
         SelectNextBackgroundTack();
     }
@@ -34,13 +34,13 @@ public class AudioManager : MonoBehaviour
         {
             SelectNextBackgroundTack();
         }
-    }
-
+    }*/
+    
     [ContextMenu("NextBackgroundSound")]
     void SelectNextBackgroundTack()
     {
         int index = Random.Range(0, BackgroundMusicClips.Count);
-        MusicPlayerAudio.volume = .3f;
+        MusicPlayerAudio.volume = .2f;
         MusicPlayerAudio.PlayOneShot(BackgroundMusicClips[index]);
     }
 
@@ -87,8 +87,7 @@ public class AudioManager : MonoBehaviour
     public void PlayRoundIntro()
     {
         int index = Random.Range(0, IntroClips.Count);
-        Debug.Log("Playing intro nb" + " " + index);
-        AudioSource.PlayClipAtPoint(IntroClips[index],CasterAudio.transform.position);
+        CasterAudio.PlayOneShot(IntroClips[index]);
     }
     
     
@@ -96,15 +95,13 @@ public class AudioManager : MonoBehaviour
     public void PlayRoundOutro()
     {
         int index = Random.Range(0, OutroClips.Count);
-        Debug.Log("Playing outro nb" + " " + index);
-        AudioSource.PlayClipAtPoint(OutroClips[index],CasterAudio.transform.position);
+        CasterAudio.PlayOneShot(OutroClips[index]);
     }
     
     
     [ContextMenu("Play Rules Audio")]
     public void PlayRulesAudio()
     {
-        AudioSource.PlayClipAtPoint(Rules,CasterAudio.transform.position);
-        Debug.Log("Playing rules audio");
+        CasterAudio.PlayOneShot(Rules);
     }
 }

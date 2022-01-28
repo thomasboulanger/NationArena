@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInputScript : MonoBehaviour
 {
@@ -19,15 +21,18 @@ public class PlayerInputScript : MonoBehaviour
 
     [HideInInspector] public float RepulseForceModifier = 1;
     [HideInInspector] public bool isDead;
+    [HideInInspector] public int playerIndex;
     
     [SerializeField]
     private List<GameObject> _hpBars = new List<GameObject>();
+    private  List<GameObject> cooldownList = new List<GameObject>();
     private Animator _animator;
     private Rigidbody _rigidbody;
     private Vector2 _inputVector;
     private string _elementInMemory = "";
     private float speedModifier;
     private bool _isFireUp, _isEarthUp, _isWaterUp, _isWindUp;
+    private Image _fireImg, _earthImg, _waterImg, _windImg;
     [SerializeField]
     private float 
         _fireCooldown,
@@ -39,30 +44,45 @@ public class PlayerInputScript : MonoBehaviour
         _waterTimer,
         _windTimer;
 
+    private bool _trigger;
+
     void Start()
     {
         playerList.Add(gameObject);
         _animator = animatorGameObject.GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         isDead = false;
-        foreach (GameObject hpBar in GameObject.FindGameObjectsWithTag("HealthBar"))
+        foreach (GameObject cd in GameObject.FindGameObjectsWithTag("Cooldown"))
         {
-            _hpBars.Add(hpBar);
+            cooldownList.Add(cd);
         }
         for (int i = 0; i < playerList.Count; i++) 
         {
             if (gameObject == playerList[i])
             {
-                foreach (GameObject hpBar in _hpBars)
+                playerIndex = i;
+                foreach (GameObject hpBar in  GameController.HpBars)
                 {
-                    if (hpBar.transform.name.Contains((i + 1).ToString())) transform.GetComponent<HealthBar>().healthBar = hpBar;
+                    if (hpBar.transform.name.Contains((i + 1).ToString())) transform.GetComponent<HealthBar>().Init(hpBar);
+                }
+                foreach (GameObject cd in cooldownList)
+                {
+                    if (cd.transform.name.Contains((i + 1).ToString()) && cd.transform.name.Contains("Fire"))
+                        _fireImg = cd.GetComponent<Image>();
+                    if (cd.transform.name.Contains((i + 1).ToString()) && cd.transform.name.Contains("Earth"))
+                        _earthImg = cd.GetComponent<Image>();
+                    if (cd.transform.name.Contains((i + 1).ToString()) && cd.transform.name.Contains("Water"))
+                        _waterImg = cd.GetComponent<Image>();
+                    if (cd.transform.name.Contains((i + 1).ToString()) && cd.transform.name.Contains("Wind"))
+                        _windImg = cd.GetComponent<Image>();
                 }
                 transform.position = GameController.spawnPoints[i].transform.position;
-                transform.name = "Player " + i + 1;
+                transform.name = "Player " + (i + 1);
                 visualGameObject.transform.GetComponent<Renderer>().material = playerMat[i];
                 
             }
         }
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().PlayerReady(playerIndex);
         speedModifier = 1;
     }
 
@@ -75,8 +95,13 @@ public class PlayerInputScript : MonoBehaviour
             if (!_isEarthUp) _isEarthUp = DecrementCooldown(_earthCooldown, ref _earthTimer);
             if (!_isWaterUp) _isWaterUp = DecrementCooldown(_waterCooldown, ref _waterTimer);
             if (!_isWindUp) _isWindUp = DecrementCooldown(_windCooldown, ref _windTimer);
+
+            _fireImg.fillAmount = _fireTimer/_fireCooldown;
+            _earthImg.fillAmount = _earthTimer/_earthCooldown;
+            _waterImg.fillAmount =   _waterTimer/_waterCooldown;
+            _windImg.fillAmount =   _windTimer/_windCooldown;
         }
-        if (isDead) PlayerDead();
+        if (isDead && !_trigger) PlayerDead();
     }
     
     private void MovePlayer()
@@ -110,11 +135,8 @@ public class PlayerInputScript : MonoBehaviour
             timer += Time.deltaTime;
             return false;
         }
-        else
-        {
-            timer = 0f;
-            return true;
-        }
+        timer = 0f;
+        return true;
     }
     
     private void OnMovement(InputValue value)
@@ -202,6 +224,7 @@ public class PlayerInputScript : MonoBehaviour
                 {
                     GameObject meteor = Instantiate(GameController.Skills[5], transform.position + Vector3.up * 7, quaternion.identity);
                     meteor.transform.forward = transform.forward;
+                    meteor.transform.Rotate(45,0,0);
                     ActivateCastAnimation("Cast");
                     _isFireUp = false;
                     _isEarthUp = false;
@@ -236,7 +259,7 @@ public class PlayerInputScript : MonoBehaviour
                 if (_isEarthUp && _isWaterUp)
                 {
                     GameObject armor = Instantiate(GameController.Skills[7], transform.position + transform.up, quaternion.identity);
-                    Destroy(armor.gameObject,10);
+                    Destroy(armor.gameObject,5);
                     StartCoroutine(armorlifetime());
                     armor.transform.SetParent(transform);
                     ActivateCastAnimation("Cast");
@@ -294,14 +317,11 @@ public class PlayerInputScript : MonoBehaviour
             }
         }
     }
-
-    public void ReturnToMainMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
     
     private void PlayerDead()
     {
+        _trigger = true;
+        GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>().OnPlayerDeath(playerIndex);
         _animator.SetBool("isDead",true);
         StartCoroutine(DieAnim());
     }
@@ -319,7 +339,7 @@ public class PlayerInputScript : MonoBehaviour
     {
         speedModifier = .5f;
         RepulseForceModifier = .3f;
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
         speedModifier = 1f;
         RepulseForceModifier = 1f;
     }

@@ -40,7 +40,7 @@ AudioSource:
   m_GameObject: {fileID: 5236393312580727092}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: cb235fe5b7b67314589c09f155c37cb6, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -170,7 +170,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: cb235fe5b7b67314589c09f155c37cb6, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -309,16 +309,15 @@ MonoBehaviour:
   Rules: {fileID: 8300000, guid: f2e22924cf9cbdb409a0fda8234bcc03, type: 3}
   BackgroundMusicClips:
   - {fileID: 8300000, guid: aadc1bc1ce9ebe04f8fb8ffcec574eb0, type: 3}
-  PlayerDeathClip: []
-  PlayerWinClip:
-  - {fileID: 8300000, guid: 26ee3280f572e124eb4fb5b426feb7ef, type: 3}
-  - {fileID: 8300000, guid: 95214940bae4ce74287eb505d9a7f0fa, type: 3}
-  - {fileID: 8300000, guid: 2e98c06ad0f906f4488d9b31b963930b, type: 3}
-  - {fileID: 8300000, guid: c74218cdacaa92c42a4c83d20069b2b6, type: 3}
   PlayerOutClip:
   - {fileID: 8300000, guid: 8e9917cb6eff76647aaf7b6a2c9ae166, type: 3}
   - {fileID: 8300000, guid: 74fdffbe775ab0a478c09719912f8d64, type: 3}
   - {fileID: 8300000, guid: 03527869af7aae9459aed5c909aa43db, type: 3}
   - {fileID: 8300000, guid: 76a91d31b1f806746ab2200fd8873f80, type: 3}
+  PlayerWinClip:
+  - {fileID: 8300000, guid: 26ee3280f572e124eb4fb5b426feb7ef, type: 3}
+  - {fileID: 8300000, guid: 95214940bae4ce74287eb505d9a7f0fa, type: 3}
+  - {fileID: 8300000, guid: 2e98c06ad0f906f4488d9b31b963930b, type: 3}
+  - {fileID: 8300000, guid: c74218cdacaa92c42a4c83d20069b2b6, type: 3}
   CasterAudio: {fileID: 5236393312580727093}
   MusicPlayerAudio: {fileID: 5236393312923019417}

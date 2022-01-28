@@ -6,13 +6,13 @@ public class HealthBar : MonoBehaviour
     private Health _health;
     [HideInInspector]
     public GameObject healthBar;
-    
+
+    private bool _trigger;
+
     void Start()
     {
-        //Cree une barre de vie de 100 pvs
-        _health = new Health(100);
-        //Initialize le compteur de texte
-        healthBar.GetComponentInChildren<Text>().text = _health.GetLife().ToString();
+        
+        
     }
 
     public void GetHit(int damage)
@@ -21,6 +21,16 @@ public class HealthBar : MonoBehaviour
         UpdateHpOnUI();
     }
 
+    public void Init(GameObject hpbar)
+    {
+        healthBar = hpbar;
+        //Cree une barre de vie de 100 pvs
+        _health = new Health(100);
+        //Initialize le compteur de texte
+        _trigger = true;
+        healthBar.GetComponentInChildren<Text>().text = _health.GetLife().ToString();
+    }
+    
     public void Heal(int heal)
     {
         _health.GetHit(-heal);
