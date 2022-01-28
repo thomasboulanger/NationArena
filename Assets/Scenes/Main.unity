@@ -1550,6 +1550,18 @@ PrefabInstance:
       propertyPath: Arena
       value: 
       objectReference: {fileID: 1423786401}
+    - target: {fileID: 6679268989439813927, guid: 7284cfc6904a3aa4e810013ddcb3ee09, type: 3}
+      propertyPath: BaseTimer
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679268989439813927, guid: 7284cfc6904a3aa4e810013ddcb3ee09, type: 3}
+      propertyPath: MaxLOEventTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6679268989439813927, guid: 7284cfc6904a3aa4e810013ddcb3ee09, type: 3}
+      propertyPath: MinLOEventTime
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7284cfc6904a3aa4e810013ddcb3ee09, type: 3}
 --- !u!1 &1628921588 stripped

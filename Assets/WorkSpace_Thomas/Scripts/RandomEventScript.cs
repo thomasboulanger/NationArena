@@ -10,7 +10,6 @@ public class RandomEventScript : MonoBehaviour
     [Header("General Event")] 
     [Range(1,10)]public int MaxEventAtTheSameTime;
     [Range(0, 100)] public int PercentageForNewEvent = 35;
-    public float RoundTime;
 
     [Header("Possible Event")] 
     public bool LightsOutEventPossible = true;
@@ -38,20 +37,17 @@ public class RandomEventScript : MonoBehaviour
     private MaterialPropertyModifier _hexagonModifier;
 
     float timer;
-    float roundTimer;
     bool gameStarted;
 
     private void Start()
     {
         timer = BaseTimer;
-        roundTimer = RoundTime;
 
         _hexagonModifier = FindObjectOfType<MaterialPropertyModifier>();
     }
 
     private void Update()
     {
-        roundTimer -= Time.deltaTime;
         if (gameStarted)
         {
             if (timer >= 0)
@@ -63,7 +59,7 @@ public class RandomEventScript : MonoBehaviour
         {
             float chanceToLaunchEvent = Random.Range(0, 100);
 
-            //if (chanceToLaunchEvent <= PercentageForNewEvent) LaunchRandomEvent();
+            if (chanceToLaunchEvent <= PercentageForNewEvent) LaunchRandomEvent();
             
             timer = BaseTimer;
         }
@@ -104,17 +100,18 @@ public class RandomEventScript : MonoBehaviour
 
     public void StartPillarSpawnEvent()
     {
-        if (roundTimer < RoundTime / 3 ? ActivePillars.Count > 0 : ActivePillars.Count > 3)
+        if (ActivePillars.Count > 2)
         {
             for (int i = 0; i < ActivePillars.Count; i++)
             {
                 Destroy(ActivePillars[i]);
                 ActivePillars.Remove(ActivePillars[i]);
-            }  
+            }
         }
+
         int NumberOfPillarsToSpawn = Random.Range(MinPillarsNumber, MaxPillarsNumber);
 
-        if (roundTimer < RoundTime / 3) NumberOfPillarsToSpawn = NumberOfPillarsToSpawn / 2;
+        
         
         float minX = 0, maxX = 0, minZ = 0, maxZ = 0;
 
