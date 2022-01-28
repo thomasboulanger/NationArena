@@ -1143,6 +1143,7 @@ MonoBehaviour:
   - {fileID: 1628921588}
   endPanel: {fileID: 163107278}
   ArenaPrefab: {fileID: 1286140988695699557, guid: 54e6f3174ffc49440bdf0ac4bdde9c3f, type: 3}
+  fencePrefab: {fileID: 4832987264882655688, guid: efcdc62bcbf66da4891dcd9a7a85aba2, type: 3}
   shaderModifier: {fileID: 1760624496}
   _mainMenuUI: {fileID: 549400516}
   _audioManager: {fileID: 54142673}

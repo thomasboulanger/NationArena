@@ -63,7 +63,7 @@ public class RandomEventScript : MonoBehaviour
         {
             float chanceToLaunchEvent = Random.Range(0, 100);
 
-            if (chanceToLaunchEvent <= PercentageForNewEvent) LaunchRandomEvent();
+            //if (chanceToLaunchEvent <= PercentageForNewEvent) LaunchRandomEvent();
             
             timer = BaseTimer;
         }

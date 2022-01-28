@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     public static List<GameObject> alivePlayers = new List<GameObject>();
     public List<GameObject> readyUI = new List<GameObject>();
     public static bool inRound;
-    public GameObject endPanel, ArenaPrefab, shaderModifier;
+    public GameObject endPanel, ArenaPrefab,fencePrefab , shaderModifier;
 
     [SerializeField] private GameObject _mainMenuUI;
     [SerializeField] private AudioManager _audioManager;
@@ -88,6 +88,8 @@ public class GameController : MonoBehaviour
     {
         Destroy(shaderModifier.GetComponent<MaterialPropertyModifier>().arena);
         GameObject go = Instantiate(ArenaPrefab, transform.position,quaternion.identity);
+        Destroy(GameObject.FindGameObjectWithTag("Fence"));
+        GameObject fence = Instantiate(fencePrefab, transform.position,quaternion.identity);
         shaderModifier.GetComponent<MaterialPropertyModifier>().Init(go);
         alivePlayers.Clear();
         foreach (GameObject player in PlayerInputScript.playerList)
